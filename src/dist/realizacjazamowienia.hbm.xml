@@ -4,13 +4,13 @@
  "http://hibernate.org/hibernate-mapping-3.0.dtd">  
   
  <hibernate-mapping>  
-  <class name="bdstudia.Employee" table="emp1000">  
+  <class name="bdstudia.Realizacjazamowienie" table="RealizajeZamowien">  
     <id name="id">  
      <generator class="increment"></generator>  
     </id>  
             
-    <property name="firstName"></property>  
-    <property name="lastName"></property>  
+    <property name="idpobrania"></property>  
+    <property name="idzamowienia"></property> 
             
   </class>  
             

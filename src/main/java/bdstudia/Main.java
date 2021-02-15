@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package bdstudia;
 
 
@@ -23,21 +24,34 @@ public static void main(String[] args) {
     StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();  
           
    Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();  
-  
-SessionFactory factory = meta.getSessionFactoryBuilder().build();  
+
+SessionFactory factory = meta.getSessionFactoryBuilder().build();
+
 Session session = factory.openSession();  
-Transaction t = session.beginTransaction();   
+
+Transaction t = session.beginTransaction();  
+
     try{    
-        Employee e1=new Employee();    
-        e1.setId(104);    
+        Employee e1=new Employee(); 
+        
+        e1.setId(111);    
         e1.setFirstName("Gaurav");    
         e1.setLastName("Chawla");    
-
-        session.save(e1);  
+        Pobranie pob = new Pobranie();
+        pob.setId(100);
+        pob.setIdbanku(200);
+        pob.setIdosoby(400);
+        pob.setIdproduktu(600);
+        pob.setDatapobrania();
+                
+        //session.save(e1); 
+        
         t.commit();  
-        System.out.println("successfully saved");    
-        factory.close();  
-        session.close();    
+        System.out.println("successfully saved");
+        
+        factory.close(); 
+       
+        session.close();   
     }
     catch(Exception e) {
         System.out.println("failed");
