@@ -6,6 +6,7 @@
 package bdstudia;
 
 
+import com.mysql.cj.jdbc.exceptions.SQLError;
 import org.hibernate.Session;    
 import org.hibernate.SessionFactory;    
 import org.hibernate.Transaction;  
@@ -26,17 +27,20 @@ public static void main(String[] args) {
 SessionFactory factory = meta.getSessionFactoryBuilder().build();  
 Session session = factory.openSession();  
 Transaction t = session.beginTransaction();   
-            
-    Employee e1=new Employee();    
-    e1.setId(104);    
-    e1.setFirstName("Gaurav");    
-    e1.setLastName("Chawla");    
-        
-    session.save(e1);  
-    t.commit();  
-    System.out.println("successfully saved");    
-    factory.close();  
-    session.close();    
-        
+    try{    
+        Employee e1=new Employee();    
+        e1.setId(104);    
+        e1.setFirstName("Gaurav");    
+        e1.setLastName("Chawla");    
+
+        session.save(e1);  
+        t.commit();  
+        System.out.println("successfully saved");    
+        factory.close();  
+        session.close();    
+    }
+    catch(Exception e) {
+        System.out.println("failed");
+    }
 }    
 }   
