@@ -4,7 +4,7 @@
  "http://hibernate.org/hibernate-mapping-3.0.dtd">  
   
  <hibernate-mapping>  
-  <class name="bdstudia.Produkt" table="bankkrwi">  
+  <class name="bdstudia.Produkt" table="Produkty">  
     <id name="id">  
      <generator class="increment"></generator>  
     </id>  
