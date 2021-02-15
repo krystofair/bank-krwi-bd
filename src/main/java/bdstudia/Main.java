@@ -33,7 +33,7 @@ Transaction t = session.beginTransaction();
 
     try{    
         Bank b0 = new Bank();
-        b0.setNazwa("nazwa2");
+        b0.setNazwa("nazwa3");
         b0.setAdres("adres2");
         b0.setMiasto("Gliwice");
         b0.setKodpocztowy("43-100");
