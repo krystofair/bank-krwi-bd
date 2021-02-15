@@ -15,7 +15,7 @@ configurations {
 dependencies {
     testImplementation     'junit:junit:4.13'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.5.Final'
-    compile files('E:/BD/conector/mysql-connector-java-8.0.22/mysql-connector-java-8.0.22.jar')
+    compile files('C:/Program Files/Java/mysql-connector-java-8.0.22.jar')
     compileClasspath files('src/dist')
     runtimeClasspath files('src/dist')
 }
