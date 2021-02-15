@@ -29,22 +29,16 @@ SessionFactory factory = meta.getSessionFactoryBuilder().build();
 
 Session session = factory.openSession();  
 
-Transaction t = session.beginTransaction();  
+Transaction t = session.beginTransaction();
 
     try{    
-        Employee e1=new Employee(); 
-        
-        e1.setId(111);    
-        e1.setFirstName("Gaurav");    
-        e1.setLastName("Chawla");    
-        Pobranie pob = new Pobranie();
-        pob.setId(100);
-        pob.setIdbanku(200);
-        pob.setIdosoby(400);
-        pob.setIdproduktu(600);
-        pob.setDatapobrania();
-                
-        //session.save(e1); 
+        Bank b0 = new Bank();
+        b0.setNazwa("nazwa2");
+        b0.setAdres("adres2");
+        b0.setMiasto("Gliwice");
+        b0.setKodpocztowy("43-100");
+        b0.setKraj("Polska");
+        session.save(b0); 
         
         t.commit();  
         System.out.println("successfully saved");

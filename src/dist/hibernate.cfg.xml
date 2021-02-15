@@ -8,16 +8,16 @@
     <session-factory>  
         <property name="hbm2ddl.auto">update</property>  
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>  
-        <property name="connection.url">jdbc:mysql://localhost:3306/bankkrwi</property>  
-        <property name="connection.username">admin</property>  
-        <property name="connection.password">admin</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/bank_dev</property>  
+        <property name="connection.username">root</property>  
+        <property name="connection.password"></property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>  
         <mapping resource="bank.hbm.xml"/>  
         <mapping resource="grupakrwi.hbm.xml"/>  
         <mapping resource="osoba.hbm.xml"/>  
         <mapping resource="pobranie.hbm.xml"/>  
         <mapping resource="produkt.hbm.xml"/>  
-        <mapping resource="realizacjazamowien.hbm.xml"/>  
+        <mapping resource="realizacjazamowienia.hbm.xml"/>  
         <mapping resource="zamowienie.hbm.xml"/>  
 
     </session-factory>
