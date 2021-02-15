@@ -10,16 +10,20 @@ package bdstudia;
  * @author makma
  */
 public class Realizacjazamowienia {
-    private int id;
+    
+    private int idrealizacji;
     private int idpobrania,idzamowienia;
 
-    public int getId() {
-        return id;
+
+    public int getIdrealizacji() {
+        return idrealizacji;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdrealizacji(int idrealizacji) {
+        this.idrealizacji = idrealizacji;
     }
+
+    
 
     public int getIdpobrania() {
         return idpobrania;

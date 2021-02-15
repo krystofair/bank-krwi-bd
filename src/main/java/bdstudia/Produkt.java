@@ -10,17 +10,17 @@ package bdstudia;
  * @author makma
  */
 public class Produkt {
-    private int id;
+    private int idproduktu;
     private String typ;
     private int okresprzydatnosci;
 
-    public int getId() {
-        return id;
+    public int getIdproduktu() {
+        return idproduktu;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setIdproduktu(int idproduktu) {
+        this.idproduktu = idproduktu;
+    }    
 
     public String getTyp() {
         return typ;

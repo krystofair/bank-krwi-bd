@@ -5,10 +5,10 @@
   
  <hibernate-mapping>  
   <class name="bdstudia.Realizacjazamowienia" table="RealizacjeZamowien">  
-    <id name="id">  
+    <id name="idrealizacji">  
      <generator class="increment"></generator>  
     </id>  
-            
+    
     <property name="idpobrania"></property>  
     <property name="idzamowienia"></property> 
             
