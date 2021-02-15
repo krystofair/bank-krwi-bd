@@ -12,7 +12,7 @@
     <property name="nazwa"></property>  
     <property name="adres"></property>  
     <property name="miasto"></property>  
-    <property name="kodPocztowy"></property>  
+    <property name="kodpocztowy"></property>  
     <property name="kraj"></property>  
             
   </class>  
