@@ -12,7 +12,14 @@
         <property name="connection.username">admin</property>  
         <property name="connection.password">admin</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>  
-        <mapping resource="employee.hbm.xml"/>  
+        <mapping resource="bank.hbm.xml"/>  
+        <mapping resource="grupakrwi.hbm.xml"/>  
+        <mapping resource="osoba.hbm.xml"/>  
+        <mapping resource="pobranie.hbm.xml"/>  
+        <mapping resource="produkt.hbm.xml"/>  
+        <mapping resource="realizacjazamowien.hbm.xml"/>  
+        <mapping resource="zamowienie.hbm.xml"/>  
+
     </session-factory>
   
 </hibernate-configuration>

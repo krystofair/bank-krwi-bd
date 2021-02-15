@@ -4,16 +4,18 @@
  "http://hibernate.sourceforge.net/hibernate-mapping-5.3.dtd">  
   
  <hibernate-mapping>  
-  <class name="bdstudia.Bank" table="banki">  
-    <id name="idbanku">  
+  <class name="bdstudia.Osoba" table="osoby">  
+    <id name="idosoby">  
      <generator class="increment"></generator>  
     </id>  
-            
-    <property name="nazwa"></property>  
+    
+    <property name="pesel"></property>          
+    <property name="imie"></property>  
+    <property name="nazwisko"></property>  
+    <property name="idgrupykrwi"></property> 
     <property name="adres"></property>  
-    <property name="miasto"></property>  
-    <property name="kodPocztowy"></property>  
-    <property name="kraj"></property>  
+    <property name="telefon"></property>  
+    <property name="dataurodzenia"></property>  
             
   </class>  
             

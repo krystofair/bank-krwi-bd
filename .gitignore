@@ -2,7 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=gradle
 
 ### Gradle ###
-.gradle
+.gradle/
+*.gradle
 build/
 
 # Ignore Gradle GUI config
