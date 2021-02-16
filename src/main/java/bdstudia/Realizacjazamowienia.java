@@ -5,10 +5,14 @@
  */
 package bdstudia;
 
+
+import javax.persistence.*;
+import java.io.Serializable;
 /**
  *
  * @author makma
  */
+
 public class Realizacjazamowienia {
     
     private int idrealizacji;

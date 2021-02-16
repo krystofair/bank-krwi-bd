@@ -5,14 +5,18 @@
  */
 package bdstudia;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  *
  * @author krystofair
  */
-public class Osoba {
+@Entity (name = "osoby")
+public class Osoba implements Serializable {
     
+    @Id
     private int idosoby;
     private String pesel, imie, nazwisko;
     private int idgrupykrwi;
