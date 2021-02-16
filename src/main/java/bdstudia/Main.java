@@ -23,38 +23,38 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class Main {    
 public static void main(String[] args) {    
         
-    //Create typesafe ServiceRegistry object    
-    StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();  
-          
-   Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();  
+        //Create typesafe ServiceRegistry object    
+        StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();  
 
-SessionFactory factory = meta.getSessionFactoryBuilder().build();
+       Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();  
 
-Session session = factory.openSession();  
+    SessionFactory factory = meta.getSessionFactoryBuilder().build();
 
-//Transaction t = session.beginTransaction();
+    Session session = factory.openSession();  
 
-    try{
-        // pobieranie listy rekordów :V
-        var f = session.getEntityManagerFactory();
-        var em = f.createEntityManager();
-        var lista_gk = em.createQuery(
-                "from grupykrwi ", GrupaKrwi.class
-        ).getResultList();
-        for(var gk : lista_gk) {
-            System.out.print("Signle row: ");
-            System.out.print(gk.getIdgrupykrwi());
-            System.out.print(gk.getRodzaj());
-            System.out.println(gk.getWskaznikrh());
+    //Transaction t = session.beginTransaction();
+
+        try{
+            // pobieranie listy rekordów :V
+            var em = factory.createEntityManager();
+            var lista_gk = em.createQuery(
+                    "from grupykrwi ", GrupaKrwi.class
+            ).getResultList();
+            for(var gk : lista_gk) {
+                System.out.print("Signle row: ");
+                System.out.print(gk.getIdgrupykrwi());
+                System.out.print(gk.getRodzaj());
+                System.out.println(gk.getWskaznikrh());
+            }
+
+    //        t.commit();   
         }
-//        t.commit();   
-    }
-    catch(Exception e) {
-        System.out.println(e.getMessage());
-    }
-    finally {
-        factory.close();
-        session.close();
-    }
-}    
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        finally {
+            factory.close();
+            session.close();
+        }
+    }    
 }   

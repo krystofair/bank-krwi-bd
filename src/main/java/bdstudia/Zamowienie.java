@@ -5,13 +5,19 @@
  */
 package bdstudia;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  *
  * @author makma
  */
-public class Zamowienie {
+
+@Entity (name="zamowienia")
+public class Zamowienie implements Serializable {
+    
+    @Id
     private int idzamowienia;
     private int idosoby, idproduktu, ilosc;
     private Date datazamowienia;

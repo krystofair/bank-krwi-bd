@@ -13,8 +13,10 @@ import java.io.Serializable;
  * @author makma
  */
 
-public class Realizacjazamowienia {
+@Entity (name="realizacjezamowien")
+public class Realizacjazamowienia implements Serializable {
     
+    @Id
     private int idrealizacji;
     private int idpobrania,idzamowienia;
 

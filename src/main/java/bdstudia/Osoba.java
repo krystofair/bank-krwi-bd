@@ -13,6 +13,7 @@ import javax.persistence.*;
  *
  * @author krystofair
  */
+
 @Entity (name = "osoby")
 public class Osoba implements Serializable {
     

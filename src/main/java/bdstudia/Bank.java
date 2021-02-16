@@ -5,12 +5,17 @@
  */
 package bdstudia;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 /**
  *
  * @author krystofair
  */
-public class Bank {
-    // properties
+@Entity (name = "banki")
+public class Bank implements Serializable {
+    
+    @Id
     private int idbanku;
     private String nazwa, adres, miasto, kodpocztowy, kraj;
 

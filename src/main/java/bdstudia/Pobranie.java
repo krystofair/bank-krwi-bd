@@ -7,14 +7,16 @@ package bdstudia;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  *
  * @author makma
  */
-
-public class Pobranie {
+@Entity (name = "pobrania")
+public class Pobranie implements Serializable {
+    
+    @Id
     private int idpobrania;
     private int idosoby, idbanku, idproduktu;
     private Date datapobrania;

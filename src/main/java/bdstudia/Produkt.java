@@ -5,11 +5,18 @@
  */
 package bdstudia;
 
+import java.io.Serializable;
+import javax.persistence.*;
+
 /**
  *
  * @author makma
  */
-public class Produkt {
+
+@Entity (name="produkty")
+public class Produkt implements Serializable{
+    
+    @Id
     private int idproduktu;
     private String typ;
     private int okresprzydatnosci;
