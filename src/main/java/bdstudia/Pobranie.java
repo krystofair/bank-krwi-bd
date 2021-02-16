@@ -12,17 +12,19 @@ import java.util.Date;
  * @author makma
  */
 public class Pobranie {
-    private int id;
+    private int idpobrania;
     private int idosoby, idbanku, idproduktu;
     private Date datapobrania;
 
-    public int getId() {
-        return id;
+    public int getIdpobrania() {
+        return idpobrania;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdpobrania(int idpobrania) {
+        this.idpobrania = idpobrania;
     }
+
+    
 
     public int getIdosoby() {
         return idosoby;

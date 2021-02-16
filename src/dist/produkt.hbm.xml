@@ -5,7 +5,7 @@
   
  <hibernate-mapping>  
   <class name="bdstudia.Produkt" table="Produkty">  
-    <id name="id">  
+    <id name="idproduktu">  
      <generator class="increment"></generator>  
     </id>  
             
