@@ -7,14 +7,10 @@
 package bdstudia;
 
 
-<<<<<<< Updated upstream
-
 import java.time.LocalTime;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-=======
->>>>>>> Stashed changes
 import org.hibernate.Session;    
 import org.hibernate.SessionFactory;    
 import org.hibernate.Transaction;  
