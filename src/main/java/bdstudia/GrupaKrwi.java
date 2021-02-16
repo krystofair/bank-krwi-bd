@@ -9,8 +9,18 @@ package bdstudia;
  *
  * @author krystofair
  */
-public class GrupaKrwi {
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+
+@Entity (name ="grupykrwi")
+public class GrupaKrwi implements Serializable {
+    
+    @Id
     private int idgrupykrwi;
+    
+    @Basic( fetch = FetchType.LAZY )
     private String wskaznikrh, rodzaj;
 
     public void setIdgrupykrwi(int idgrupykrwi) {
@@ -20,11 +30,11 @@ public class GrupaKrwi {
     public void setWskaznikrh(String wskaznikrh) {
         this.wskaznikrh = wskaznikrh;
     }
-
+    
     public void setRodzaj(String rodzaj) {
         this.rodzaj = rodzaj;
     }
-
+    
     public int getIdgrupykrwi() {
         return idgrupykrwi;
     }

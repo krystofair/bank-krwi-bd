@@ -5,12 +5,15 @@
  */
 package bdstudia;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Entity;
 
 /**
  *
  * @author makma
  */
+
 public class Pobranie {
     private int idpobrania;
     private int idosoby, idbanku, idproduktu;
