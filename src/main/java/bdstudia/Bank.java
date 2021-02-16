@@ -66,4 +66,15 @@ public class Bank implements Serializable {
     public String getKraj() {
         return kraj;
     }
+    
+    public boolean validate() {
+        if(this.nazwa.isEmpty()
+                || this.adres.isEmpty()
+                || this.miasto.isEmpty()
+                || this.kraj.isEmpty()
+                || this.kodpocztowy.isEmpty())
+            return false;
+        else
+            return true;
+    }
 }

@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;  
 import org.hibernate.boot.MetadataSources;  
 import org.hibernate.boot.registry.StandardServiceRegistry;  
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;  
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
   
     
 public class Main {    
@@ -30,31 +30,17 @@ public static void main(String[] args) {
 
     SessionFactory factory = meta.getSessionFactoryBuilder().build();
 
-    Session session = factory.openSession();  
-
     //Transaction t = session.beginTransaction();
 
         try{
-            // pobieranie listy rekordów :V
-            var em = factory.createEntityManager();
-            var lista_gk = em.createQuery(
-                    "from grupykrwi ", GrupaKrwi.class
-            ).getResultList();
-            for(var gk : lista_gk) {
-                System.out.print("Signle row: ");
-                System.out.print(gk.getIdgrupykrwi());
-                System.out.print(gk.getRodzaj());
-                System.out.println(gk.getWskaznikrh());
-            }
+            BankJFrame bjf = new BankJFrame(factory);
+            bjf.pokaz_formularz();
 
     //        t.commit();   
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        finally {
-            factory.close();
-            session.close();
-        }
     }    
+
 }   
