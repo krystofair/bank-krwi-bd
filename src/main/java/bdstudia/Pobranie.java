@@ -19,6 +19,7 @@ public class Pobranie implements Serializable {
     @Id
     private int idpobrania;
     private int idosoby, idbanku, idproduktu;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date datapobrania;
 
     public int getIdpobrania() {

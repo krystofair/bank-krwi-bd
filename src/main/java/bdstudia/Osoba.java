@@ -22,6 +22,7 @@ public class Osoba implements Serializable {
     private String pesel, imie, nazwisko;
     private int idgrupykrwi;
     private String adres, telefon;
+    @Temporal(javax.persistence.TemporalType.DATE)
     Date dataurodzenia;
 
     public void setIdosoby(int idosoby) {
