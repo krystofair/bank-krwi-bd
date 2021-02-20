@@ -46,5 +46,5 @@ public class GrupaKrwi implements Serializable {
     public String getRodzaj() {
         return rodzaj;
     }
-    
+
 }

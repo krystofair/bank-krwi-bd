@@ -1,6 +1,7 @@
 package bdstudia;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,6 +12,10 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -181,11 +186,8 @@ public class PobranieForm extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Wybór Osoby", jPanel1);
 
-        ListaZnalezionychBankow.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        ListaZnalezionychBankow.setModel(new BankiZnalezioneListModel());
+        ListaZnalezionychBankow.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(ListaZnalezionychBankow);
 
         NazwaBankuEditText3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -225,6 +227,11 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel9.setText("Kraj:");
 
         SzukajBankuBtn.setText("Szukaj");
+        SzukajBankuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SzukajHandler(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -307,72 +314,31 @@ public class PobranieForm extends javax.swing.JFrame {
 
     
     private void ImieEditText2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ImieEditText2KeyTyped
-        char c = evt.getKeyChar();
-        if(!(((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122))))
-        {
+        if(ImieEditText2.getText().length() > 255
+        || !Character.isAlphabetic(evt.getKeyChar()) 
+        && evt.getKeyChar() != ' ') {
             evt.consume();
-        }else if((((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122)))){
-            if(!ImieEditText2.getText().isEmpty()){
-                String buff = ImieEditText2.getText() + c;
-                if(buff.length()>255){
-                    evt.consume();
-                }
-            }
         }
     }//GEN-LAST:event_ImieEditText2KeyTyped
 
     private void NazwiskoEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwiskoEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(!(((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122))))
-        {
+        if(!Character.isAlphabetic(evt.getKeyChar()) && evt.getKeyChar() != ' ' &&
+                evt.getKeyChar() != '-') {
             evt.consume();
-        }else if((((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122)))){
-            if(!NazwiskoEditText.getText().isEmpty()){
-                String buff = NazwiskoEditText.getText() + c;
-                if(buff.length()>255){
-                    evt.consume();
-                }
-            }
         }
     }//GEN-LAST:event_NazwiskoEditTextKeyTyped
 
     private void PeselEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PeselEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(!((c>='0') && (c<='9')))
-        {
+        if(!((evt.getKeyChar()>='0') && (evt.getKeyChar()<='9'))
+        || PeselEditText.getText().length() > 11)
             evt.consume();
-        }else if((c>='0') && (c<='9')){
-            if(!PeselEditText.getText().isEmpty()){
-                String buff = PeselEditText.getText() + c;
-                if(buff.length()>11){
-                    evt.consume();
-                }
-            }
-        }
-
     }//GEN-LAST:event_PeselEditTextKeyTyped
 
     private void AdresEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(! (((c>=65)&&(c<=90))
-            || ((c>=97)&&(c<=122))
-            || ((c>=47) && (c<=57))
-            || (c == KeyEvent.VK_SPACE)
-        ))
-        {
+        if(AdresEditText.getText().length() > 255 ||
+                !Character.isLetterOrDigit(evt.getKeyChar()) &&
+                evt.getKeyChar()!= ' ' && evt.getKeyChar() != '/') {
             evt.consume();
-        }else if((((c>=65)&&(c<=90))
-            || ((c>=97)&&(c<=122))
-            || ((c>=47) && (c<=57))
-            || (c == KeyEvent.VK_SPACE)
-        ))
-        {
-            if(!AdresEditText.getText().isEmpty()){
-                String buff = AdresEditText.getText() + c;
-                if(buff.length()>255){
-                    evt.consume();
-                }
-            }
         }
     }//GEN-LAST:event_AdresEditTextKeyTyped
 
@@ -393,68 +359,81 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_KrajBankuEditText1KeyTyped
 
     private void SzukajHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SzukajHandler
-        ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).clear();
         Session sesja = factory.openSession();
-        CriteriaBuilder builder = factory.createEntityManager().getCriteriaBuilder();
+        CriteriaBuilder cb = sesja.getCriteriaBuilder();
+        List<Predicate> predicates = new ArrayList<>();
         if(evt.getSource() == SzukajOsobyBtn) {
+            CriteriaQuery<Osoba> cr = cb.createQuery(Osoba.class);
+            Root<Osoba> root = cr.from(Osoba.class);
             if(!PeselEditText.getText().isBlank()) {
                 String pesel = PeselEditText.getText();
+                // dodanie predicates - czyli takiego obiektowego warunku XD
+                predicates.add(cb.like(root.get("pesel"), pesel + "%"));
 //                if(Validator.isOnlyDigit(pesel))
 //                else
 //                    JOptionPane.showMessageDialog(
 //                        this, "Wpisany nr. PESEL jest niepoprawny.",
-//                        "B³¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
-                builder.
-                criteria.add(Restrictions.ilike("pesel", pesel, MatchMode.START));
-                
-                
-            } else if(PeselEditText.getText().length() != 11 || PeselEditText.getText().isBlank()){
+//                        "Bï¿½ï¿½d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
+            } else {
                 if(!ImieEditText2.getText().isBlank()) {
                     String imie = ImieEditText2.getText();
-//                    restr.add(Restrictions.ilike("imie", imie, MatchMode.START));
+                    predicates.add(cb.like(root.get("imie"), imie+"%"));
                 }
                 if (!NazwiskoEditText.getText().isBlank()) {
                     String nazwisko = NazwiskoEditText.getText();
-//                    restr.add(Restrictions.ilike("nazwisko", nazwisko, MatchMode.START));
-                    
+                    predicates.add(cb.like(root.get("nazwisko"), nazwisko+"%"));
                 }
                 if (!AdresEditText.getText().isBlank()) {
-                    String adres = AdresEditText.getText(); 
+                    String adres = AdresEditText.getText();
+                    predicates.add(cb.like(root.get("adres"), "%"+adres+"%"));
 //                   if(Validator.validateSQL(adres))
 //                    else
 //                        JOptionPane.showMessageDialog(this, "Wpisano b³êdne znaki");
 //                    restr.add(Restrictions.ilike("adres", AdresEditText.getText(), MatchMode.START));
                 }
             }
-            // kod aktualizuj¹cy restrykcje.
-            ((OsobyZnalezioneModel)
-                    ListaZnalezionychOsob.getModel()).dodajOsoby(query.getResultList());
-//            Criterion c = ne
-//            Query opiq = sesja.createQuery(cq)
-        }
-
-        if(false) {
-//                try {
-//                    Query opiq = sesja.createQuery("FROM osoby", Osoba.class)
-//                        .setParameter("imie", imie);
-//                    ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).dodajOsoby(lista_wynikow);
-//                } catch(NoResultException nre) {
-//                    // beka z tego kodu jak ...
-//                    Osoba o = new Osoba();
-//                    o.setImie("Brak"); o.setNazwisko("wyników");
-//                    ((OsobyZnalezioneModel)ListaZnalezionychOsob.getModel()).dodajOsoby(Arrays.asList(o));
-//                }
-            try {
-                String nazwisko = NazwiskoEditText.getText();
-                List<Osoba> lista_wynikow = sesja.createQuery("FROM osoby WHERE Nazwisko = :nazwisko", Osoba.class)
-                    .setParameter("nazwisko", nazwisko).getResultList();
-                ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).dodajOsoby(lista_wynikow);
-            } catch(NoResultException nre) {
-                  JOptionPane.showMessageDialog(this, "brak wyników.");
+            Predicate[] preds = new Predicate[predicates.size()];
+            for(int i=0; i<predicates.size(); ++i) preds[i] = predicates.get(i);
+            if(predicates.size() > 0) {
+                cr.where(preds);
+                Query query = sesja.createQuery(cr);
+                ((OsobyZnalezioneModel)
+                    ListaZnalezionychOsob.getModel())
+                    .dodajOsoby(query.getResultList());
+            } else {
+                JOptionPane.showMessageDialog(this, "Musisz wype³niæ przynajmniej jedno pole.");
             }
         }
         if(evt.getSource() == SzukajBankuBtn) {
-            
+            CriteriaQuery<Bank> cr = cb.createQuery(Bank.class);
+            Root<Bank> root = cr.from(Bank.class);
+            if(!NazwaBankuEditText3.getText().isBlank()) {
+                String nazwa = NazwaBankuEditText3.getText();
+                predicates.add(cb.like(root.get("nazwa"), "%"+ nazwa + "%"));
+            }
+            if(!AdresBankuEditText1.getText().isBlank()) {
+                String adres = AdresBankuEditText1.getText();
+                predicates.add(cb.like(root.get("adres"), "%"+adres+"%"));
+            }
+            if (!MiastoBankuEditText1.getText().isBlank()) {
+                String miasto = MiastoBankuEditText1.getText();
+                predicates.add(cb.like(root.get("miasto"), miasto+"%"));
+            }
+            if (!KrajBankuEditText1.getText().isBlank()) {
+                String kraj = KrajBankuEditText1.getText();
+                predicates.add(cb.like(root.get("kraj"), kraj+"%"));
+            }
+            Predicate[] preds = new Predicate[predicates.size()];
+            for(int i=0; i<predicates.size(); ++i) preds[i] = predicates.get(i);
+            if(predicates.size() > 0) {
+                cr.where(preds);
+                Query query = sesja.createQuery(cr);
+                ((BankiZnalezioneListModel)
+                    ListaZnalezionychBankow.getModel())
+                    .dodajBanki(query.getResultList());
+            } else {
+                JOptionPane.showMessageDialog(this, "Musisz wype³niæ przynajmniej jedno pole.");
+            }
         }
         sesja.close(); // zamykanie sesji
     }//GEN-LAST:event_SzukajHandler

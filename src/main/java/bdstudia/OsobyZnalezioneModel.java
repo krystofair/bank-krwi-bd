@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bdstudia;
 
 import java.util.List;
@@ -18,7 +13,7 @@ public class OsobyZnalezioneModel extends DefaultListModel<String> {
     }
     
     public void dodajOsoby(List<Osoba> osoby) {
-        
+        if(!this.isEmpty()) this.clear();
         osoby.forEach(e->{
             addElement(e.getImie() + " "
                     + e.getNazwisko() + " "
@@ -26,7 +21,4 @@ public class OsobyZnalezioneModel extends DefaultListModel<String> {
                     + e.getAdres());
         });
     }
-    
-    
-    
 }
