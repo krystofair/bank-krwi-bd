@@ -1,12 +1,16 @@
 package bdstudia;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 
 /**
  *
@@ -49,6 +53,7 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         SzukajOsobyBtn = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         ListaZnalezionychBankow = new javax.swing.JList<>();
@@ -115,6 +120,8 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Ostatnia Dodana Osoba");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -122,20 +129,26 @@ public class PobranieForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(NazwiskoEditText, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-                            .addComponent(PeselEditText, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(AdresEditText, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ImieEditText2)))
-                    .addComponent(SzukajOsobyBtn))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(NazwiskoEditText, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                                    .addComponent(PeselEditText, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(AdresEditText, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ImieEditText2)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(SzukajOsobyBtn)
+                                .addGap(31, 31, 31)
+                                .addComponent(jButton2)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -158,8 +171,10 @@ public class PobranieForm extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(AdresEditText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(SzukajOsobyBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SzukajOsobyBtn)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -378,33 +393,69 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_KrajBankuEditText1KeyTyped
 
     private void SzukajHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SzukajHandler
-//        List<Boolean> pola_szukania = new ArrayList<>(4);
-//        pola_szukania.forEach( (var b) -> {b=false; });
         ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).clear();
         Session sesja = factory.openSession();
-        var em = factory.createEntityManager();
-        sesja.beginTransaction();
-        
+        CriteriaBuilder builder = factory.createEntityManager().getCriteriaBuilder();
         if(evt.getSource() == SzukajOsobyBtn) {
-//            if(!ImieEditText2.getText().isEmpty()) pola_szukania.set(0, true);
-//            if(!NazwiskoEditText.getText().isEmpty()) pola_szukania.set(1, true);
-//            if(!PeselEditText.getText().isEmpty()) pola_szukania.set(2, true);
-//            if(!AdresEditText.getText().isEmpty()) pola_szukania.set(3, true);
-            if(!ImieEditText2.getText().isBlank()) {
-                try {
+            if(!PeselEditText.getText().isBlank()) {
+                String pesel = PeselEditText.getText();
+//                if(Validator.isOnlyDigit(pesel))
+//                else
+//                    JOptionPane.showMessageDialog(
+//                        this, "Wpisany nr. PESEL jest niepoprawny.",
+//                        "B³¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
+                builder.
+                criteria.add(Restrictions.ilike("pesel", pesel, MatchMode.START));
+                
+                
+            } else if(PeselEditText.getText().length() != 11 || PeselEditText.getText().isBlank()){
+                if(!ImieEditText2.getText().isBlank()) {
                     String imie = ImieEditText2.getText();
-                    List<Osoba> lista_wynikow = em.createQuery("FROM osoby WHERE Imie = :imie", Osoba.class)
-                        .setParameter("imie", imie).getResultList();
-                    ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).dodajOsoby(lista_wynikow);
-                } catch(NoResultException nre) {
-                      JOptionPane.showMessageDialog(this, "brak wyników.");
+//                    restr.add(Restrictions.ilike("imie", imie, MatchMode.START));
                 }
+                if (!NazwiskoEditText.getText().isBlank()) {
+                    String nazwisko = NazwiskoEditText.getText();
+//                    restr.add(Restrictions.ilike("nazwisko", nazwisko, MatchMode.START));
+                    
+                }
+                if (!AdresEditText.getText().isBlank()) {
+                    String adres = AdresEditText.getText(); 
+//                   if(Validator.validateSQL(adres))
+//                    else
+//                        JOptionPane.showMessageDialog(this, "Wpisano b³êdne znaki");
+//                    restr.add(Restrictions.ilike("adres", AdresEditText.getText(), MatchMode.START));
+                }
+            }
+            // kod aktualizuj¹cy restrykcje.
+            ((OsobyZnalezioneModel)
+                    ListaZnalezionychOsob.getModel()).dodajOsoby(query.getResultList());
+//            Criterion c = ne
+//            Query opiq = sesja.createQuery(cq)
+        }
+
+        if(false) {
+//                try {
+//                    Query opiq = sesja.createQuery("FROM osoby", Osoba.class)
+//                        .setParameter("imie", imie);
+//                    ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).dodajOsoby(lista_wynikow);
+//                } catch(NoResultException nre) {
+//                    // beka z tego kodu jak ...
+//                    Osoba o = new Osoba();
+//                    o.setImie("Brak"); o.setNazwisko("wyników");
+//                    ((OsobyZnalezioneModel)ListaZnalezionychOsob.getModel()).dodajOsoby(Arrays.asList(o));
+//                }
+            try {
+                String nazwisko = NazwiskoEditText.getText();
+                List<Osoba> lista_wynikow = sesja.createQuery("FROM osoby WHERE Nazwisko = :nazwisko", Osoba.class)
+                    .setParameter("nazwisko", nazwisko).getResultList();
+                ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).dodajOsoby(lista_wynikow);
+            } catch(NoResultException nre) {
+                  JOptionPane.showMessageDialog(this, "brak wyników.");
             }
         }
         if(evt.getSource() == SzukajBankuBtn) {
             
         }
-        sesja.getTransaction().commit();
         sesja.close(); // zamykanie sesji
     }//GEN-LAST:event_SzukajHandler
 
@@ -457,6 +508,7 @@ public class PobranieForm extends javax.swing.JFrame {
     private javax.swing.JButton SzukajBankuBtn;
     private javax.swing.JButton SzukajOsobyBtn;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
