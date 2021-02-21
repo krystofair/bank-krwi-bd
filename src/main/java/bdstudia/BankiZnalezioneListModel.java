@@ -24,7 +24,7 @@ public class BankiZnalezioneListModel extends DefaultListModel<String> {
         banki.forEach(e->{
             addElement(e.getNazwa() + " "
                     + e.getAdres()+ " " 
-                    + ((e.getKodpocztowy() != "null") ? e.getKodpocztowy() : "")  + ", "
+                    + ((e.getKodpocztowy() != null) ? e.getKodpocztowy() : "")  + ", "
                     + e.getMiasto()+ " "
                     + e.getKraj());
             IdBankowNaLiscie.add(e.getIdbanku());
