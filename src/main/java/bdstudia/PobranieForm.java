@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -35,7 +36,7 @@ public class PobranieForm extends javax.swing.JFrame {
    
     public PobranieForm(SessionFactory factory_ref) {
         this.factory = factory_ref;
-        this.PolDataPobrania = new Date();
+        this.PolDataPobrania = new Date(System.currentTimeMillis());
         initComponents();
     }
 
@@ -537,10 +538,11 @@ public class PobranieForm extends javax.swing.JFrame {
         if(data != null) {
             if(data.getTime() <= System.currentTimeMillis()) {
                 DateChoiceBtn.setText(pullOnlyDate(data));
+                this.PolDataPobrania.setTime(data.getTime());
             } else {
                 DateChoiceBtn.setText(pullOnlyDate(new Date(System.currentTimeMillis())));
+                this.PolDataPobrania.setTime(new Date(System.currentTimeMillis()).getTime());
             }
-            this.PolDataPobrania.setTime(data.getTime());
         }
     }//GEN-LAST:event_DateChoiceBtnActionPerformed
 
@@ -559,12 +561,29 @@ public class PobranieForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nie wybrano banku.");
             return;
         }
+        Date d = composeDateTogether();
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        if(!(Calendar.getInstance().after(c))) {
+            JOptionPane.showMessageDialog(this, "Data nie mo¿e byæ wiêksza ni¿ teraŸniejsza. Popraw datê.");
+            return;
+        }
         this.pobranie = new Pobranie();
-        this.pobranie.setDatapobrania(composeDateTogether());
+        this.pobranie.setDatapobrania(d);
         this.pobranie.setIdbanku(id_banku);
         this.pobranie.setIdosoby(id_osoby);
         this.pobranie.setIdproduktu(ProduktComboBox.getSelectedIndex()+1);
-        JOptionPane.showMessageDialog(this,this.pobranie.toString());
+//        JOptionPane.showMessageDialog(this,this.pobranie.toString());
+        Session session = factory.openSession();
+        session.beginTransaction();
+            session.save(this.pobranie);
+        try{
+            session.getTransaction().commit();
+        } catch(RollbackException re) {
+            session.getTransaction().rollback();
+            JOptionPane.showMessageDialog(this, "Nie powiod³o siê dodanie pobrania.");
+        }
+        session.close();
     }//GEN-LAST:event_PobierzKrewBtnActionPerformed
 
     private Date composeDateTogether() {
