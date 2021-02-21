@@ -62,6 +62,10 @@ public class Pobranie implements Serializable {
     public void setDatapobrania(Date datapobrania) {
         this.datapobrania = datapobrania;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Pobranie{" + "idpobrania=" + idpobrania + ", idosoby=" + idosoby + ", idbanku=" + idbanku + ", idproduktu=" + idproduktu + ", datapobrania=" + datapobrania + '}';
+    }
     
 }

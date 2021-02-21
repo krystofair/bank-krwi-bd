@@ -1,19 +1,16 @@
 package bdstudia;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -24,6 +21,13 @@ import javax.persistence.criteria.Root;
 public class PobranieForm extends javax.swing.JFrame {
     
    SessionFactory factory;
+   Osoba LastPerson;
+   Pobranie pobranie;
+   Date PolDataPobrania;
+   
+   public void wczytajOsobe(Osoba o) {
+       this.LastPerson = o;
+   }
 
     /**
      * Creates new form PobranieForm
@@ -31,6 +35,7 @@ public class PobranieForm extends javax.swing.JFrame {
    
     public PobranieForm(SessionFactory factory_ref) {
         this.factory = factory_ref;
+        this.PolDataPobrania = new Date();
         initComponents();
     }
 
@@ -44,7 +49,8 @@ public class PobranieForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        PobierzKrewBtn = new javax.swing.JButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -58,7 +64,7 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         SzukajOsobyBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        FromLastFormBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         ListaZnalezionychBankow = new javax.swing.JList<>();
@@ -71,11 +77,27 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         SzukajBankuBtn = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        ProduktComboBox = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        DateChoiceBtn = new javax.swing.JButton();
+        CzasGodzinyComboBox = new javax.swing.JComboBox<>();
+        CzasMinutyComboBox = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("POBIERANIE KRWI.");
+        setResizable(false);
 
-        jButton1.setText("Dalej");
+        PobierzKrewBtn.setText("Pobierz Krew");
+        PobierzKrewBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PobierzKrewBtnActionPerformed(evt);
+            }
+        });
 
         ListaZnalezionychOsob.setModel(new OsobyZnalezioneModel());
         ListaZnalezionychOsob.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -125,7 +147,12 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Ostatnia Dodana Osoba");
+        FromLastFormBtn.setText("Z ostatniego formularza");
+        FromLastFormBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FromLastFormBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -134,26 +161,25 @@ public class PobranieForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(NazwiskoEditText, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                                    .addComponent(PeselEditText, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(AdresEditText, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ImieEditText2)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(SzukajOsobyBtn)
-                                .addGap(31, 31, 31)
-                                .addComponent(jButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(NazwiskoEditText, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                            .addComponent(PeselEditText, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(AdresEditText, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ImieEditText2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(SzukajOsobyBtn)
+                        .addGap(31, 31, 31)
+                        .addComponent(FromLastFormBtn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -178,9 +204,9 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SzukajOsobyBtn)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FromLastFormBtn))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -239,23 +265,23 @@ public class PobranieForm extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(14, 14, 14)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(AdresBankuEditText1)
-                            .addComponent(NazwaBankuEditText3)
-                            .addComponent(MiastoBankuEditText1)
-                            .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(SzukajBankuBtn)
-                        .addGap(0, 393, Short.MAX_VALUE)))
+                            .addComponent(NazwaBankuEditText3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AdresBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(MiastoBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(SzukajBankuBtn, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane3)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -279,34 +305,89 @@ public class PobranieForm extends javax.swing.JFrame {
                     .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(SzukajBankuBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jTabbedPane2.addTab("Wybór Banku", jPanel3);
+
+        jLabel10.setText("Data Pobrania:");
+
+        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew pe³na", "p³ytki krwi" }));
+
+        jLabel12.setText("Wytwarzany produkt:");
+
+        DateChoiceBtn.setText(pullOnlyDate(null));
+        DateChoiceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DateChoiceBtnActionPerformed(evt);
+            }
+        });
+
+        CzasGodzinyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        CzasGodzinyComboBox.setSelectedItem(pullOnlyTime(null, true)
+        );
+
+        CzasMinutyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        CzasMinutyComboBox.setSelectedItem(pullOnlyTime(null, false));
+
+        jLabel11.setText(":");
+
+        jLabel14.setText("Godzina:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(DateChoiceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CzasGodzinyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CzasMinutyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(82, 82, 82)
+                                .addComponent(ProduktComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(PobierzKrewBtn)))))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(DateChoiceBtn)
+                    .addComponent(CzasGodzinyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CzasMinutyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel14))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ProduktComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(PobierzKrewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -373,7 +454,7 @@ public class PobranieForm extends javax.swing.JFrame {
 //                else
 //                    JOptionPane.showMessageDialog(
 //                        this, "Wpisany nr. PESEL jest niepoprawny.",
-//                        "Bï¿½ï¿½d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
+//                        "B³¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
             } else {
                 if(!ImieEditText2.getText().isBlank()) {
                     String imie = ImieEditText2.getText();
@@ -409,7 +490,7 @@ public class PobranieForm extends javax.swing.JFrame {
             Root<Bank> root = cr.from(Bank.class);
             if(!NazwaBankuEditText3.getText().isBlank()) {
                 String nazwa = NazwaBankuEditText3.getText();
-                predicates.add(cb.like(root.get("nazwa"), "%"+ nazwa + "%"));
+                predicates.add(cb.like(root.get("nazwa"), nazwa + "%"));
             }
             if(!AdresBankuEditText1.getText().isBlank()) {
                 String adres = AdresBankuEditText1.getText();
@@ -438,10 +519,79 @@ public class PobranieForm extends javax.swing.JFrame {
         sesja.close(); // zamykanie sesji
     }//GEN-LAST:event_SzukajHandler
 
-    /**
-     * @param args the command line arguments
-     */
-    public void pokaz_formularz() {
+    private void FromLastFormBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromLastFormBtnActionPerformed
+        if(LastPerson != null) {
+            PeselEditText.setText(LastPerson.getPesel());
+            //SzukajHandler(new java.awt.event.ActionEvent(SzukajOsobyBtn, 0, "action performed"));
+            ((OsobyZnalezioneModel)ListaZnalezionychOsob.getModel()).dodajOsoby(Arrays.asList(LastPerson));
+            ListaZnalezionychOsob.setSelectedIndex(0);
+            AdresEditText.setText(LastPerson.getAdres());
+            ImieEditText2.setText(LastPerson.getImie());
+            NazwiskoEditText.setText(LastPerson.getNazwisko());
+        }
+    }//GEN-LAST:event_FromLastFormBtnActionPerformed
+
+    private void DateChoiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DateChoiceBtnActionPerformed
+        DatePicker dp = new DatePicker(this);
+        Date data = dp.setPickedDate();
+        if(data != null) {
+            if(data.getTime() <= System.currentTimeMillis()) {
+                DateChoiceBtn.setText(pullOnlyDate(data));
+            } else {
+                DateChoiceBtn.setText(pullOnlyDate(new Date(System.currentTimeMillis())));
+            }
+            this.PolDataPobrania.setTime(data.getTime());
+        }
+    }//GEN-LAST:event_DateChoiceBtnActionPerformed
+
+    private void PobierzKrewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PobierzKrewBtnActionPerformed
+        // no to walidacja czy wszystko pobrane itd.
+        int id_banku, id_osoby;
+         try {
+            id_osoby = ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).getIdOsoby(ListaZnalezionychOsob.getSelectedIndex());
+        } catch(NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Nie wybrano osoby.");
+            return;
+        }
+        try {
+            id_banku = ((BankiZnalezioneListModel) ListaZnalezionychBankow.getModel()).getIdBanku(ListaZnalezionychBankow.getSelectedIndex());
+        } catch(NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Nie wybrano banku.");
+            return;
+        }
+        this.pobranie = new Pobranie();
+        this.pobranie.setDatapobrania(composeDateTogether());
+        this.pobranie.setIdbanku(id_banku);
+        this.pobranie.setIdosoby(id_osoby);
+        this.pobranie.setIdproduktu(ProduktComboBox.getSelectedIndex()+1);
+        JOptionPane.showMessageDialog(this,this.pobranie.toString());
+    }//GEN-LAST:event_PobierzKrewBtnActionPerformed
+
+    private Date composeDateTogether() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(this.PolDataPobrania);
+        long czas_w_ms = c.get(Calendar.MINUTE)*60+c.get(Calendar.HOUR_OF_DAY)*3600+c.get(Calendar.SECOND);
+        czas_w_ms *= 1000;
+        c.setTimeInMillis(this.PolDataPobrania.getTime() - czas_w_ms);
+        c.add(Calendar.HOUR_OF_DAY, Integer.parseInt((String) CzasGodzinyComboBox.getSelectedItem()));
+        c.add(Calendar.MINUTE, Integer.parseInt((String) CzasMinutyComboBox.getSelectedItem()));
+        return c.getTime();
+    }
+    
+    private String pullOnlyTime(Date d, boolean hours){
+        if(d == null)
+            d = new Date(System.currentTimeMillis());
+        return (hours) ? new java.text.SimpleDateFormat("HH").format(d)
+                : new java.text.SimpleDateFormat("mm").format(d);
+    }
+    
+    private String pullOnlyDate(Date d) {
+        if(d == null)
+            d = new Date(System.currentTimeMillis());
+        return new java.text.SimpleDateFormat("EEEE, dd / MM / yyyyy").format(d);
+    }
+    
+    public void pokazFormularz() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -476,6 +626,10 @@ public class PobranieForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AdresBankuEditText1;
     private javax.swing.JTextField AdresEditText;
+    private javax.swing.JComboBox<String> CzasGodzinyComboBox;
+    private javax.swing.JComboBox<String> CzasMinutyComboBox;
+    private javax.swing.JButton DateChoiceBtn;
+    private javax.swing.JButton FromLastFormBtn;
     private javax.swing.JTextField ImieEditText2;
     private javax.swing.JTextField KrajBankuEditText1;
     private javax.swing.JList<String> ListaZnalezionychBankow;
@@ -484,10 +638,15 @@ public class PobranieForm extends javax.swing.JFrame {
     private javax.swing.JTextField NazwaBankuEditText3;
     private javax.swing.JTextField NazwiskoEditText;
     private javax.swing.JTextField PeselEditText;
+    private javax.swing.JButton PobierzKrewBtn;
+    private javax.swing.JComboBox<String> ProduktComboBox;
     private javax.swing.JButton SzukajBankuBtn;
     private javax.swing.JButton SzukajOsobyBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
