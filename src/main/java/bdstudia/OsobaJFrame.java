@@ -7,6 +7,11 @@ package bdstudia;
 
 import java.awt.event.KeyEvent;
 import java.util.Date;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.swing.JOptionPane;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  *
@@ -17,15 +22,18 @@ public class OsobaJFrame extends javax.swing.JFrame {
     /**
      * Creates new form OsobaJFrame
      */
+    SessionFactory sf_ref;
     private Osoba nowaosoba;
     
-    public OsobaJFrame(Osoba o){
+    public OsobaJFrame(SessionFactory sf,Osoba o){
+        this.sf_ref = sf;
         initComponents();
         nowaosoba = o;
         init();
         
     }
-    public OsobaJFrame() {
+    public OsobaJFrame(SessionFactory sf) {
+        this.sf_ref = sf;
         initComponents();
     }
     private void init(){
@@ -329,15 +337,46 @@ public class OsobaJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TelefonEditTextKeyTyped
 
     private void ZatwierdzButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZatwierdzButtonActionPerformed
-        this.nowaosoba = new Osoba();
-        this.nowaosoba.setPesel(PeselEditText.getText());
-        this.nowaosoba.setImie(ImieEditText.getText());
-        this.nowaosoba.setNazwisko(NazwiskoEditText.getText());
-        this.nowaosoba.setAdres(AdresEditText.getText());
-        this.nowaosoba.setTelefon(TelefonEditText.getText());
-        this.nowaosoba.setIdgrupykrwi(CraftGrupaKrwi());
-        this.nowaosoba.setDataurodzenia(PeselToDate());
-        
+        System.out.println("Tu trafi³em EEEEE");
+        if(!IDEditText.getText().isEmpty()){                                        // dla osoby istniejacej w bazie danych    
+            System.out.println("Tu trafi³em EEEEE2");
+            initOsoba();
+            Session sesja = sf_ref.openSession();
+            EntityManager em = sf_ref.createEntityManager();
+            try{
+                sesja.beginTransaction();
+                sesja.update(nowaosoba);
+                sesja.getTransaction().commit();
+                sesja.close();
+                JOptionPane.showMessageDialog(this, "Pomyœlnie zmieniono dane osoby w bazie.",
+                        "Update osoby. Info.", JOptionPane.INFORMATION_MESSAGE);
+            }catch(java.lang.IllegalStateException ise){
+            JOptionPane.showMessageDialog(this, "DEBUG IllegalStateException in OsobaJFrame.");
+            } finally {
+                em.close();
+            }          
+        }else{                                                                  // dla nowej osoby której nie ma w bazie danych
+            System.out.println("Tu trafi³em EEEEE");
+            this.nowaosoba = new Osoba();
+            initOsoba();
+            if(!CzyIstnieje()){
+                Session sesja = sf_ref.openSession();
+                EntityManager em = sf_ref.createEntityManager();
+                try{
+                    sesja.beginTransaction();
+                    sesja.save(nowaosoba);
+                    sesja.getTransaction().commit();
+                    sesja.close();
+                    JOptionPane.showMessageDialog(this, "Pomyœlnie dodano osobe do bazy.",
+                            "Dodawanie osoby. Info.", JOptionPane.INFORMATION_MESSAGE);
+                    LOCK_WINDOW();
+                }catch(java.lang.IllegalStateException ise){
+                JOptionPane.showMessageDialog(this, "DEBUG IllegalStateException in OsobaJFrame.");
+                } finally {
+                    em.close();
+                }
+            }
+        }
     }//GEN-LAST:event_ZatwierdzButtonActionPerformed
 
     private void EdytujButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EdytujButtonActionPerformed
@@ -354,9 +393,7 @@ public class OsobaJFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_EdytujButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public void pokazformularz() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -383,6 +420,7 @@ public class OsobaJFrame extends javax.swing.JFrame {
         OsobaJFrame t = this;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 t.setVisible(true);
             }
@@ -434,13 +472,48 @@ public class OsobaJFrame extends javax.swing.JFrame {
         }
         Date data = new Date(rok-1900,miesiac-1,dzien);
         return data;
-    }
-    
+    }    
     private int CraftGrupaKrwi(){
         return GrupaKrwiComboBox.getSelectedIndex() + 1;        
-    }
-    
+    }    
     public Osoba getOsoba(){
         return this.nowaosoba;
+    }    
+    public void initOsoba(){
+        this.nowaosoba.setPesel(PeselEditText.getText());
+        this.nowaosoba.setImie(ImieEditText.getText());
+        this.nowaosoba.setNazwisko(NazwiskoEditText.getText());
+        this.nowaosoba.setAdres(AdresEditText.getText());
+        this.nowaosoba.setTelefon(TelefonEditText.getText());
+        this.nowaosoba.setIdgrupykrwi(CraftGrupaKrwi());
+        this.nowaosoba.setDataurodzenia(PeselToDate());
     }
+    public boolean CzyIstnieje(){
+       Session sesja = sf_ref.openSession();
+       EntityManager em = sf_ref.createEntityManager();
+       try{
+            Osoba osoba_wynik = em.createQuery("from osoby where pesel = :pesel ", Osoba.class)
+                        .setParameter("pesel", nowaosoba.getPesel())
+                        .getSingleResult();
+            JOptionPane.showMessageDialog(this, "osoba o tym peselu juz istnieje, popraw dane lub zamknij okno formularza",
+                        "osoba formularz. B³¹d.", JOptionPane.WARNING_MESSAGE);
+            em.close(); 
+            return true;
+       }catch(NoResultException nre) {
+            em.close();  
+            return false;
+       }         
+   }
+    public void LOCK_WINDOW(){
+        ImieEditText.setEditable(false);
+        NazwiskoEditText.setEditable(false);
+        AdresEditText.setEditable(false);
+        TelefonEditText.setEditable(false);
+        PeselEditText.setEditable(false);
+        GrupaKrwiComboBox.setEnabled(false);
+        ZatwierdzButton.setEnabled(false);
+        SprawdButton.setEnabled(false);
+        EdytujButton.setEnabled(false);
+       
+   }
 }
