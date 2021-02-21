@@ -5,8 +5,11 @@
  */
 package bdstudia;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
@@ -24,7 +27,8 @@ import javax.persistence.criteria.Root;
 public class ZamowieniaJFrame extends javax.swing.JFrame {
 
     private SessionFactory factory;
-
+    private Zamowienie z;
+     
     /**
      * Creates new form ZamowieniaJFrame
      */
@@ -62,11 +66,11 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
         TypProduktuComboBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        IloscSpiner = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         PanelOpisu = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        ZamowienieBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -190,7 +194,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Iloœæ :");
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        IloscSpiner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel7.setText("Jednostek");
 
@@ -217,7 +221,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
                         .addGap(46, 46, 46)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(TypProduktuComboBox, 0, 113, Short.MAX_VALUE)
-                            .addComponent(jSpinner1))
+                            .addComponent(IloscSpiner))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addGap(0, 163, Short.MAX_VALUE)))
@@ -233,7 +237,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(IloscSpiner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,7 +246,12 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Wybór Produktu", jPanel3);
 
-        jButton1.setText("Z³ó¿ zamówienie");
+        ZamowienieBTN.setText("Z³ó¿ zamówienie");
+        ZamowienieBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ZamowienieBTNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -254,7 +263,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 1, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(ZamowienieBTN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -263,7 +272,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ZamowienieBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -353,6 +362,42 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
          Dodaj_Opis();
     }//GEN-LAST:event_TypProduktuComboBoxActionPerformed
 
+    private void ZamowienieBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZamowienieBTNActionPerformed
+        int  id_osoby, id_produktu, ilosc;
+        Date data = new Date(System.currentTimeMillis());
+        id_produktu = TypProduktuComboBox.getSelectedIndex()+1;
+        ilosc = (int)IloscSpiner.getValue();
+        Session sesja = factory.openSession();
+        EntityManager em = factory.createEntityManager();
+        try {
+            id_osoby = ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).getIdOsoby(ListaZnalezionychOsob.getSelectedIndex());
+            this.z = new Zamowienie();
+            this.z.setIdosoby(id_osoby);
+            this.z.setIdproduktu(id_produktu);
+            this.z.setIlosc(ilosc);
+            this.z.setDatazamowienia(data);
+            try{
+                    sesja.beginTransaction();
+                    sesja.save(z);
+                    sesja.getTransaction().commit();
+                    sesja.close();
+                    JOptionPane.showMessageDialog(this, "Pomyœlnie z³o¿ono zamówienie.",
+                            "Sk³adanie Zamówieñ. Info.", JOptionPane.INFORMATION_MESSAGE);
+                    
+                }catch(java.lang.IllegalStateException ise){
+                JOptionPane.showMessageDialog(this, "DEBUG IllegalStateException in ZamowieniaJFrame.");
+                } finally {
+                    em.close();
+                }
+            
+        } catch(NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Nie wybrano osoby/biorcy.");
+            return;
+        }
+        
+        
+    }//GEN-LAST:event_ZamowienieBTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -423,9 +468,12 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
             }
         }
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AdresEditText;
+    private javax.swing.JSpinner IloscSpiner;
     private javax.swing.JTextField ImieEditText2;
     private javax.swing.JList<String> ListaZnalezionychOsob;
     private javax.swing.JTextField NazwiskoEditText;
@@ -433,7 +481,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField PeselEditText;
     private javax.swing.JButton SzukajOsobyBtn;
     private javax.swing.JComboBox<String> TypProduktuComboBox;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton ZamowienieBTN;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -446,7 +494,6 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables
 }
