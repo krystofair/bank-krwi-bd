@@ -20,7 +20,7 @@ public class Zamowienie implements Serializable {
     @Id
     private int idzamowienia;
     private int idosoby, idproduktu, ilosc;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date datazamowienia;
 
     public int getIdzamowienia() {
