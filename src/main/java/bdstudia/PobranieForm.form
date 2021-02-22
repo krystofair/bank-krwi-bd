@@ -138,7 +138,7 @@
                                   <Component id="NazwiskoEditText" alignment="0" pref="395" max="32767" attributes="0"/>
                                   <Component id="PeselEditText" alignment="1" max="32767" attributes="0"/>
                                   <Component id="AdresEditText" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="ImieEditText2" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="ImieEditText2" alignment="1" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -152,7 +152,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jScrollPane1" pref="476" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="501" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -187,7 +187,7 @@
                           <Component id="EditChoosedPersonBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="220" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="215" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -209,6 +209,7 @@
                     <Property name="selectionMode" type="int" value="0"/>
                   </Properties>
                   <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="PobranieForm_ListaZnalezionychOsob"/>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
@@ -315,12 +316,12 @@
                                   <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <EmptySpace pref="35" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="NazwaBankuEditText3" alignment="1" min="-2" pref="416" max="-2" attributes="0"/>
-                                  <Component id="AdresBankuEditText1" alignment="1" min="-2" pref="416" max="-2" attributes="0"/>
-                                  <Component id="MiastoBankuEditText1" alignment="1" min="-2" pref="416" max="-2" attributes="0"/>
-                                  <Component id="KrajBankuEditText1" alignment="1" min="-2" pref="416" max="-2" attributes="0"/>
+                                  <Component id="MiastoBankuEditText1" alignment="1" min="-2" pref="395" max="-2" attributes="0"/>
+                                  <Component id="AdresBankuEditText1" alignment="1" min="-2" pref="395" max="-2" attributes="0"/>
+                                  <Component id="NazwaBankuEditText3" alignment="1" min="-2" pref="395" max="-2" attributes="0"/>
+                                  <Component id="KrajBankuEditText1" alignment="1" min="-2" pref="395" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -329,7 +330,7 @@
                               <Component id="EditBankBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="33" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jScrollPane3" max="32767" attributes="0"/>

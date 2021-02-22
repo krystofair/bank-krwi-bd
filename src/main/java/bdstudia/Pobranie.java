@@ -18,6 +18,9 @@ public class Pobranie implements Serializable {
     
     @Id
     private int idpobrania;
+    
+    @JoinColumn(name = "IDPobrania")
+    
     private int idosoby, idbanku, idproduktu;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date datapobrania;

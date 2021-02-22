@@ -223,8 +223,8 @@ public class BankJFrame extends javax.swing.JFrame {
         }
         
         if(!bank.validate() ) {
-            JOptionPane.showMessageDialog(this, "Nie poprawne dane, wype³nij wszystkie komórki",
-                    "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nie poprawne dane, wypeÂ³nij wszystkie komÃ³rki",
+                    "Dodawanie banku. BÂ³Â¹d.", JOptionPane.WARNING_MESSAGE);
         } else {
             Session sesja = sf_ref.openSession();
             if(dodawanie) {
@@ -235,8 +235,8 @@ public class BankJFrame extends javax.swing.JFrame {
                             .setParameter("miasto", bank.getMiasto())
                             .setParameter("adres", bank.getAdres())
                             .getSingleResult();
-                    JOptionPane.showMessageDialog(this, "Bank w tym mieœcie o podanym adresie ju¿ istnieje, popraw dane lub zamknij okno formularza",
-                            "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Bank w tym mieÅ“cie o podanym adresie juÂ¿ istnieje, popraw dane lub zamknij okno formularza",
+                            "Dodawanie banku. BÂ³Â¹d.", JOptionPane.WARNING_MESSAGE);
 
                 } catch(NoResultException nre) {
                     //dodawania banku.
@@ -244,7 +244,7 @@ public class BankJFrame extends javax.swing.JFrame {
                     sesja.save(bank);
                     sesja.getTransaction().commit();
                     sesja.close();
-                    JOptionPane.showMessageDialog(this, "Pomyœlnie dodano bank do bazy.",
+                    JOptionPane.showMessageDialog(this, "PomyÅ“lnie dodano bank do bazy.",
                             "Dodawanie banku. Info.", JOptionPane.INFORMATION_MESSAGE);
                 } catch(java.lang.IllegalStateException ise) {
                     // entity manager was close, now here isn't a problem
@@ -265,10 +265,10 @@ public class BankJFrame extends javax.swing.JFrame {
                     sesja.getTransaction().commit();
                 } catch(RollbackException re) {
                     sesja.getTransaction().rollback();
-                    JOptionPane.showMessageDialog(this, "Nie uda³o siê wyedytowaæ banku");
+                    JOptionPane.showMessageDialog(this, "Nie udaÂ³o siÃª wyedytowaÃ¦ banku");
                 }
                 sesja.close();
-                JOptionPane.showMessageDialog(this, "Pomyœlnie wyedytowano wpis banku.");
+                JOptionPane.showMessageDialog(this, "PomyÅ“lnie wyedytowano wpis banku.");
             }
             
             this.dispose();

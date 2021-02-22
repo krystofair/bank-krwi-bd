@@ -158,7 +158,7 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
-        EditChoosedPersonBtn.setText("Edytuj wybran¹ osobê");
+        EditChoosedPersonBtn.setText("Edytuj wybranï¿½ osobï¿½");
         EditChoosedPersonBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditChoosedPersonBtnActionPerformed(evt);
@@ -183,7 +183,7 @@ public class PobranieForm extends javax.swing.JFrame {
                             .addComponent(NazwiskoEditText, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
                             .addComponent(PeselEditText, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(AdresEditText, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ImieEditText2)))
+                            .addComponent(ImieEditText2, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(SzukajOsobyBtn)
                         .addGap(31, 31, 31)
@@ -192,7 +192,7 @@ public class PobranieForm extends javax.swing.JFrame {
                         .addComponent(EditChoosedPersonBtn)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -220,11 +220,11 @@ public class PobranieForm extends javax.swing.JFrame {
                     .addComponent(FromLastFormBtn)
                     .addComponent(EditChoosedPersonBtn))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Wybór Osoby", jPanel1);
+        jTabbedPane2.addTab("WybÃ³r Osoby", jPanel1);
 
         ListaZnalezionychBankow.setModel(new BankiZnalezioneListModel());
         ListaZnalezionychBankow.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -293,7 +293,7 @@ public class PobranieForm extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9))
-                        .addGap(14, 14, 14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(NazwaBankuEditText3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(AdresBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -336,11 +336,11 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Wybór Banku", jPanel3);
+        jTabbedPane2.addTab("WybÃ³r Banku", jPanel3);
 
         jLabel10.setText("Data Pobrania:");
 
-        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew pe³na", "p³ytki krwi" }));
+        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew peÂ³na", "pÂ³ytki krwi" }));
 
         jLabel12.setText("Wytwarzany produkt:");
 
@@ -483,7 +483,7 @@ public class PobranieForm extends javax.swing.JFrame {
 //                else
 //                    JOptionPane.showMessageDialog(
 //                        this, "Wpisany nr. PESEL jest niepoprawny.",
-//                        "B³¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
+//                        "BÂ³Â¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
             } else {
                 if(!ImieEditText2.getText().isBlank()) {
                     String imie = ImieEditText2.getText();
@@ -498,7 +498,7 @@ public class PobranieForm extends javax.swing.JFrame {
                     predicates.add(cb.like(root.get("adres"), "%"+adres+"%"));
 //                   if(Validator.validateSQL(adres))
 //                    else
-//                        JOptionPane.showMessageDialog(this, "Wpisano b³êdne znaki");
+//                        JOptionPane.showMessageDialog(this, "Wpisano bÂ³Ãªdne znaki");
 //                    restr.add(Restrictions.ilike("adres", AdresEditText.getText(), MatchMode.START));
                 }
             }
@@ -511,7 +511,7 @@ public class PobranieForm extends javax.swing.JFrame {
                     ListaZnalezionychOsob.getModel())
                     .dodajOsoby(query.getResultList());
             } else {
-                JOptionPane.showMessageDialog(this, "Musisz wype³niæ przynajmniej jedno pole.");
+                JOptionPane.showMessageDialog(this, "Musisz wypeÂ³niÃ¦ przynajmniej jedno pole.");
             }
         }
         if(evt.getSource() == SzukajBankuBtn) {
@@ -542,7 +542,7 @@ public class PobranieForm extends javax.swing.JFrame {
                     ListaZnalezionychBankow.getModel())
                     .dodajBanki(query.getResultList());
             } else {
-                JOptionPane.showMessageDialog(this, "Musisz wype³niæ przynajmniej jedno pole.");
+                JOptionPane.showMessageDialog(this, "Musisz wypeÂ³niÃ¦ przynajmniej jedno pole.");
             }
         }
         sesja.close(); // zamykanie sesji
@@ -593,7 +593,7 @@ public class PobranieForm extends javax.swing.JFrame {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         if(!(Calendar.getInstance().after(c))) {
-            JOptionPane.showMessageDialog(this, "Data nie mo¿e byæ wiêksza ni¿ teraŸniejsza. Popraw datê.");
+            JOptionPane.showMessageDialog(this, "Data nie moÂ¿e byÃ¦ wiÃªksza niÂ¿ teraÂŸniejsza. Popraw datÃª.");
             return;
         }
         this.pobranie = new Pobranie();
@@ -609,7 +609,7 @@ public class PobranieForm extends javax.swing.JFrame {
             session.getTransaction().commit();
         } catch(RollbackException re) {
             session.getTransaction().rollback();
-            JOptionPane.showMessageDialog(this, "Nie powiod³o siê dodanie pobrania.");
+            JOptionPane.showMessageDialog(this, "Nie powiodÂ³o siÃª dodanie pobrania.");
         }
         session.close();
     }//GEN-LAST:event_PobierzKrewBtnActionPerformed
@@ -694,7 +694,7 @@ public class PobranieForm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        var t = this;
+        PobranieForm t = this;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -746,7 +746,7 @@ public class PobranieForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void showEditForm() {
-        this.setTitle("WYBIERZ OSOBÊ");
+        this.setTitle("WYBIERZ OSOBï¿½");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

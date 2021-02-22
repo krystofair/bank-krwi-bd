@@ -20,6 +20,8 @@ public class GrupaKrwi implements Serializable {
     @Id
     private int idgrupykrwi;
     
+    @JoinColumn(name = "IDGrupyKrwi")
+    
     @Basic( fetch = FetchType.LAZY )
     private String wskaznikrh, rodzaj;
 
