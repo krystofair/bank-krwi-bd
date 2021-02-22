@@ -211,7 +211,7 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Wybór Osoby", jPanel1);
+        jTabbedPane2.addTab("WybÃ³r Osoby", jPanel1);
 
         ListaZnalezionychBankow.setModel(new BankiZnalezioneListModel());
         ListaZnalezionychBankow.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -311,11 +311,11 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Wybór Banku", jPanel3);
+        jTabbedPane2.addTab("WybÃ³r Banku", jPanel3);
 
         jLabel10.setText("Data Pobrania:");
 
-        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew pe³na", "p³ytki krwi" }));
+        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew peÂ³na", "pÂ³ytki krwi" }));
 
         jLabel12.setText("Wytwarzany produkt:");
 
@@ -455,7 +455,7 @@ public class PobranieForm extends javax.swing.JFrame {
 //                else
 //                    JOptionPane.showMessageDialog(
 //                        this, "Wpisany nr. PESEL jest niepoprawny.",
-//                        "B³¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
+//                        "BÂ³Â¹d w nr. PESEL.", JOptionPane.WARNING_MESSAGE);
             } else {
                 if(!ImieEditText2.getText().isBlank()) {
                     String imie = ImieEditText2.getText();
@@ -470,7 +470,7 @@ public class PobranieForm extends javax.swing.JFrame {
                     predicates.add(cb.like(root.get("adres"), "%"+adres+"%"));
 //                   if(Validator.validateSQL(adres))
 //                    else
-//                        JOptionPane.showMessageDialog(this, "Wpisano b³êdne znaki");
+//                        JOptionPane.showMessageDialog(this, "Wpisano bÂ³Ãªdne znaki");
 //                    restr.add(Restrictions.ilike("adres", AdresEditText.getText(), MatchMode.START));
                 }
             }
@@ -483,7 +483,7 @@ public class PobranieForm extends javax.swing.JFrame {
                     ListaZnalezionychOsob.getModel())
                     .dodajOsoby(query.getResultList());
             } else {
-                JOptionPane.showMessageDialog(this, "Musisz wype³niæ przynajmniej jedno pole.");
+                JOptionPane.showMessageDialog(this, "Musisz wypeÂ³niÃ¦ przynajmniej jedno pole.");
             }
         }
         if(evt.getSource() == SzukajBankuBtn) {
@@ -514,7 +514,7 @@ public class PobranieForm extends javax.swing.JFrame {
                     ListaZnalezionychBankow.getModel())
                     .dodajBanki(query.getResultList());
             } else {
-                JOptionPane.showMessageDialog(this, "Musisz wype³niæ przynajmniej jedno pole.");
+                JOptionPane.showMessageDialog(this, "Musisz wypeÂ³niÃ¦ przynajmniej jedno pole.");
             }
         }
         sesja.close(); // zamykanie sesji
@@ -565,7 +565,7 @@ public class PobranieForm extends javax.swing.JFrame {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         if(!(Calendar.getInstance().after(c))) {
-            JOptionPane.showMessageDialog(this, "Data nie mo¿e byæ wiêksza ni¿ teraŸniejsza. Popraw datê.");
+            JOptionPane.showMessageDialog(this, "Data nie moÂ¿e byÃ¦ wiÃªksza niÂ¿ teraÂŸniejsza. Popraw datÃª.");
             return;
         }
         this.pobranie = new Pobranie();
@@ -581,7 +581,7 @@ public class PobranieForm extends javax.swing.JFrame {
             session.getTransaction().commit();
         } catch(RollbackException re) {
             session.getTransaction().rollback();
-            JOptionPane.showMessageDialog(this, "Nie powiod³o siê dodanie pobrania.");
+            JOptionPane.showMessageDialog(this, "Nie powiodÂ³o siÃª dodanie pobrania.");
         }
         session.close();
     }//GEN-LAST:event_PobierzKrewBtnActionPerformed

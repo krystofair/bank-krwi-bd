@@ -18,6 +18,9 @@ public class Produkt implements Serializable{
     
     @Id
     private int idproduktu;
+    
+    @JoinColumn(name = "IDProduktu")
+    
     private String typ;
     private int okresprzydatnosci;
 

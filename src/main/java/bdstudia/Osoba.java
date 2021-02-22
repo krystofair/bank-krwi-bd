@@ -19,6 +19,9 @@ public class Osoba implements Serializable {
     
     @Id
     private int idosoby;
+    
+    @JoinColumn(name = "IDOsoby")
+    
     private String pesel, imie, nazwisko;
     private int idgrupykrwi;
     private String adres, telefon;

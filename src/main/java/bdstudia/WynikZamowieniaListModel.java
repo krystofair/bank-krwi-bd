@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bdstudia;
 
 import java.util.ArrayList;
@@ -14,8 +9,7 @@ import javax.swing.DefaultListModel;
  * @author makma
  */
 public class WynikZamowieniaListModel extends  DefaultListModel<String> {
-    List<Integer> IdZamowienNaLiscie;
-    
+    List<Integer> IdZamowienNaLiscie;    
     public WynikZamowieniaListModel() {
         IdZamowienNaLiscie = new ArrayList<>();
     }
@@ -27,12 +21,11 @@ public class WynikZamowieniaListModel extends  DefaultListModel<String> {
         }
         wz.forEach(e->{
             addElement(e.getImie() + " "
-                    + e.getNazwisko()+ " " 
-                    + e.getRodzaj() + " "
-                    + e.getWskaznikRh() + " "
+                    + e.getNazwisko()+ ", " 
                     + e.getTyp() + " "
-                    + e.getIlosc() + " "
-                    + e.getData_zamowienia() + " "
+                    + e.getRodzaj() + e.getWskaznikRh() + " | "                    
+                    + e.getIlosc() + " dawek, "
+                    + e.getData_zamowienia() + ", Zamówienie nr: "
                     + e.getIdzamowienia());
             IdZamowienNaLiscie.add(e.getIdzamowienia());
         });
