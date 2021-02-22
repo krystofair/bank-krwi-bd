@@ -565,6 +565,7 @@ public class PobranieForm extends javax.swing.JFrame {
         this.pobranie.setIdosoby(id_osoby);
         this.pobranie.setIdproduktu(ProduktComboBox.getSelectedIndex()+1);
         JOptionPane.showMessageDialog(this,this.pobranie.toString());
+        
     }//GEN-LAST:event_PobierzKrewBtnActionPerformed
 
     private Date composeDateTogether() {

@@ -31,33 +31,24 @@ public static void main(String[] args) {
     StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
     Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
     SessionFactory factory = meta.getSessionFactoryBuilder().build();
-    //PobranieForm zjf = new PobranieForm(factory);
-    //zjf.pokazFormularz();
-    RealizacjaZamowienJFrame zjf = new RealizacjaZamowienJFrame(factory);
-    zjf.pokaz_formularz();
-    
+    PobranieForm zjf = new PobranieForm(factory);
+    zjf.pokazFormularz();
+    //RealizacjaZamowienJFrame zjf = new RealizacjaZamowienJFrame(factory);
+    //zjf.pokaz_formularz();
+    // ZamowieniaJFrame zjf = new ZamowieniaJFrame(factory);
+    // zjf.pokaz_formularz();
+    //BankJFrame B = new BankJFrame(factory);
+    //B.pokaz_formularz();
 //    Session sesja = factory.openSession();
 //    EntityManager em = factory.createEntityManager();
-//    List<Object> entities = em.createNativeQuery(
-//	"SELECT * " +
-//	"FROM Person pr, Partner pt " +
-//	"WHERE pr.name = pt.name" )
-//    .getResultList();
-//    @NamedNativeQuery(
-//            name = "OsobyGrupaKrwi",
-//            query =
-//            "SELECT " +
-//                " O.IDOsoby, AS \"OKZ.Imie\", " +
-//                " OKZ.Nazwisko, AS \"OKZ.Nazwisko\", " +
-//                " OKZ.Rodzaj, AS \"OKZ.Rodzaj\","+
-//                " OKZ.WskaznikRh, AS \"OKZ.WskaznikRh\", "+
-//                " OKZ.Ilosc, AS \"OKZ.Ilosc\", "+
-//                " OKZ.DataZamowienia, AS \"OKZ.DataZamowienia\", "+
-//                " P.Typ, AS \"P.Typ\" " +
-//                "FROM Produkty P " +
-//                "JOIN ( SELECT " +
-//                      
-//                )\
+//    List<Realizacjazamowienia> rz = new ArrayList<>();
+//    int idrealizacji = 1;
+//    rz = em.createNativeQuery(
+//        "SELECT * "
+//        + "FROM realizacjezamowien "
+//        + "WHERE IDRealizacji = "+idrealizacji
+//    ).getResultList();
+
 
 //        String idZ = "o";
 //        List<Object[]> WynikiOBJ = em.createNativeQuery(
