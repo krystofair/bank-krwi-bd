@@ -1,6 +1,7 @@
 package bdstudia;
 
 import bdstudia.Bank;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
@@ -157,7 +158,7 @@ public class BankJFrame extends javax.swing.JFrame {
                     "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
         } else {
             Session sesja = sf_ref.openSession();
-            var em = sf_ref.createEntityManager();
+            EntityManager em = sf_ref.createEntityManager();
             try {
                 Bank bank_wynik = em.createQuery("from banki where miasto = :miasto " +
                         "AND adres = :adres", Bank.class)
@@ -209,7 +210,7 @@ public class BankJFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-        var t = this;
+        BankJFrame t = this;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
