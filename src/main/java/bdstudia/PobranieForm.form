@@ -145,6 +145,8 @@
                               <Component id="SzukajOsobyBtn" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="FromLastFormBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="EditChoosedPersonBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -182,6 +184,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="SzukajOsobyBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="FromLastFormBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="EditChoosedPersonBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" pref="220" max="32767" attributes="0"/>
@@ -280,6 +283,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FromLastFormBtnActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="EditChoosedPersonBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Edytuj wybran&#x105; osob&#x119;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EditChoosedPersonBtnActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -312,7 +323,11 @@
                                   <Component id="KrajBankuEditText1" alignment="1" min="-2" pref="416" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="SzukajBankuBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="SzukajBankuBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="EditBankBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -346,7 +361,10 @@
                           <Component id="KrajBankuEditText1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="SzukajBankuBtn" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="SzukajBankuBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="EditBankBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="220" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -433,6 +451,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SzukajHandler"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="EditBankBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Edytuj wybrany bank"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EditBankBtnActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -1,7 +1,9 @@
 package bdstudia;
 
 import bdstudia.Bank;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.RollbackException;
 import javax.swing.JOptionPane;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,6 +27,35 @@ public class BankJFrame extends javax.swing.JFrame {
         this.sf_ref = sf;
         initComponents();
     }
+    public void loadBank(Bank b) {
+        this.bank = b;
+        int i=0;
+        while(true) {
+            try {
+                switch(i) {
+                    case 0:
+                        i+=1;
+                        jTF_bank_adres.setText(bank.getAdres());
+                    case 1:
+                        i+=1;
+                        jTF_bank_kodpoczt.setText(bank.getKodpocztowy());
+                    case 2:
+                        i+=1;
+                        jTF_bank_kraj.setText(bank.getKraj());
+                    case 3:
+                        i+=1;
+                        jTF_bank_miasto.setText(bank.getMiasto());
+                    case 4:
+                        i+=1;
+                        jTF_bank_name.setText(bank.getNazwa());
+                        
+                }
+                break;
+            }
+            catch (NullPointerException npe) {
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,8 +77,9 @@ public class BankJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        IdLoadedBank = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DODAWANIE BANKU");
 
         EXECUTE_BUTTON.setText("Dodaj");
@@ -82,18 +114,22 @@ public class BankJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addComponent(EXECUTE_BUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(97, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jTF_bank_kraj))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jTF_bank_adres))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jTF_bank_name))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -102,21 +138,22 @@ public class BankJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTF_bank_kodpoczt, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTF_bank_miasto))))
+                            .addComponent(jTF_bank_miasto)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(IdLoadedBank)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(EXECUTE_BUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(IdLoadedBank)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTF_bank_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -138,51 +175,74 @@ public class BankJFrame extends javax.swing.JFrame {
                 .addComponent(jTF_bank_kraj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(EXECUTE_BUTTON)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void EXECUTE_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXECUTE_BUTTONActionPerformed
-        // zebranie nowych informacji.
-        bank = new Bank();
-        bank.setAdres(jTF_bank_adres.getText());
-        bank.setKodpocztowy(jTF_bank_kodpoczt.getText());
-        bank.setKraj(jTF_bank_kraj.getText());
-        bank.setMiasto(jTF_bank_miasto.getText());
-        bank.setNazwa(jTF_bank_name.getText());
+        boolean dodawanie = false;
+        if(bank == null) {
+            // zebranie nowych informacji.
+            bank = new Bank();
+            bank.setAdres(jTF_bank_adres.getText());
+            bank.setKodpocztowy(jTF_bank_kodpoczt.getText());
+            bank.setKraj(jTF_bank_kraj.getText());
+            bank.setMiasto(jTF_bank_miasto.getText());
+            bank.setNazwa(jTF_bank_name.getText());
+            dodawanie = true;
+        }
+        
         if(!bank.validate() ) {
             JOptionPane.showMessageDialog(this, "Nie poprawne dane, wype³nij wszystkie komórki",
                     "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
         } else {
             Session sesja = sf_ref.openSession();
-            var em = sf_ref.createEntityManager();
-            try {
-                Bank bank_wynik = em.createQuery("from banki where miasto = :miasto " +
-                        "AND adres = :adres", Bank.class)
-                        .setParameter("miasto", bank.getMiasto())
-                        .setParameter("adres", bank.getAdres())
-                        .getSingleResult();
-                JOptionPane.showMessageDialog(this, "Bank w tym mieœcie o podanym adresie ju¿ istnieje, popraw dane lub zamknij okno formularza",
-                        "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
+            if(dodawanie) {
+                EntityManager em = sf_ref.createEntityManager();
+                try {
+                    em.createQuery("from banki where miasto = :miasto " +
+                            "AND adres = :adres", Bank.class)
+                            .setParameter("miasto", bank.getMiasto())
+                            .setParameter("adres", bank.getAdres())
+                            .getSingleResult();
+                    JOptionPane.showMessageDialog(this, "Bank w tym mieœcie o podanym adresie ju¿ istnieje, popraw dane lub zamknij okno formularza",
+                            "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
 
-            } catch(NoResultException nre) {
-                //dodawania banku.
-                sesja.beginTransaction();
-                sesja.save(bank);
-                sesja.getTransaction().commit();
+                } catch(NoResultException nre) {
+                    //dodawania banku.
+                    sesja.beginTransaction();
+                    sesja.save(bank);
+                    sesja.getTransaction().commit();
+                    sesja.close();
+                    JOptionPane.showMessageDialog(this, "Pomyœlnie dodano bank do bazy.",
+                            "Dodawanie banku. Info.", JOptionPane.INFORMATION_MESSAGE);
+                } catch(java.lang.IllegalStateException ise) {
+                    // entity manager was close, now here isn't a problem
+                    // Problem was here, because running from normal Main program - no in loop of AWT.
+                    JOptionPane.showMessageDialog(this, "DEBUG IllegalStateException in BankFormularz.");
+                } finally {
+                    em.close();
+                }
+            } else {
+                bank.setAdres(jTF_bank_adres.getText());
+                bank.setKodpocztowy(jTF_bank_kodpoczt.getText());
+                bank.setKraj(jTF_bank_kraj.getText());
+                bank.setMiasto(jTF_bank_miasto.getText());
+                bank.setNazwa(jTF_bank_name.getText());
+                try {
+                    sesja.beginTransaction();
+                    sesja.update(bank);
+                    sesja.getTransaction().commit();
+                } catch(RollbackException re) {
+                    sesja.getTransaction().rollback();
+                    JOptionPane.showMessageDialog(this, "Nie uda³o siê wyedytowaæ banku");
+                }
                 sesja.close();
-                JOptionPane.showMessageDialog(this, "Pomyœlnie dodano bank do bazy.",
-                        "Dodawanie banku. Info.", JOptionPane.INFORMATION_MESSAGE);
-            } catch(java.lang.IllegalStateException ise) {
-                // entity manager was close, now here isn't a problem
-                // Problem was here, because running from normal Main program - no in loop of AWT.
-                JOptionPane.showMessageDialog(this, "DEBUG IllegalStateException in BankFormularz.");
-            } finally {
-                em.close();
             }
         }
+        this.dispose();
     }//GEN-LAST:event_EXECUTE_BUTTONActionPerformed
 
     void pokaz_formularz(){
@@ -209,7 +269,7 @@ public class BankJFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-        var t = this;
+        BankJFrame t = this;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -220,6 +280,7 @@ public class BankJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EXECUTE_BUTTON;
+    private javax.swing.JLabel IdLoadedBank;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -231,4 +292,39 @@ public class BankJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTF_bank_miasto;
     private javax.swing.JTextField jTF_bank_name;
     // End of variables declaration//GEN-END:variables
+
+    void showEditForm() {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(BankJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(BankJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(BankJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(BankJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        
+        IdLoadedBank.setText(Integer.toString(bank.getIdbanku()));
+        BankJFrame t = this;
+        EXECUTE_BUTTON.setText("Edytuj");
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                t.setVisible(true);
+            }
+        });
+    }
 }
