@@ -1,5 +1,6 @@
 package bdstudia;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -26,7 +27,7 @@ public class PobranieForm extends javax.swing.JFrame {
    Pobranie pobranie;
    Date PolDataPobrania;
    
-   public void wczytajOsobe(Osoba o) {
+   public void loadPerson(Osoba o) {
        this.LastPerson = o;
    }
 
@@ -66,6 +67,7 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         SzukajOsobyBtn = new javax.swing.JButton();
         FromLastFormBtn = new javax.swing.JButton();
+        EditChoosedPersonBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         ListaZnalezionychBankow = new javax.swing.JList<>();
@@ -78,6 +80,7 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         SzukajBankuBtn = new javax.swing.JButton();
+        EditBankBtn = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         ProduktComboBox = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
@@ -89,7 +92,7 @@ public class PobranieForm extends javax.swing.JFrame {
 
         jLabel1.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("POBIERANIE KRWI.");
         setResizable(false);
 
@@ -155,6 +158,13 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
+        EditChoosedPersonBtn.setText("Edytuj wybran� osob�");
+        EditChoosedPersonBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditChoosedPersonBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -177,7 +187,9 @@ public class PobranieForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(SzukajOsobyBtn)
                         .addGap(31, 31, 31)
-                        .addComponent(FromLastFormBtn)))
+                        .addComponent(FromLastFormBtn)
+                        .addGap(36, 36, 36)
+                        .addComponent(EditChoosedPersonBtn)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
@@ -205,7 +217,8 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SzukajOsobyBtn)
-                    .addComponent(FromLastFormBtn))
+                    .addComponent(FromLastFormBtn)
+                    .addComponent(EditChoosedPersonBtn))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addContainerGap())
@@ -260,6 +273,13 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
+        EditBankBtn.setText("Edytuj wybrany bank");
+        EditBankBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditBankBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -275,12 +295,15 @@ public class PobranieForm extends javax.swing.JFrame {
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(MiastoBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AdresBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(NazwaBankuEditText3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(SzukajBankuBtn, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(33, Short.MAX_VALUE))
+                            .addComponent(NazwaBankuEditText3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AdresBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(MiastoBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(SzukajBankuBtn)
+                        .addGap(33, 33, 33)
+                        .addComponent(EditBankBtn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane3)
                 .addContainerGap())
@@ -305,7 +328,9 @@ public class PobranieForm extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(SzukajBankuBtn)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SzukajBankuBtn)
+                    .addComponent(EditBankBtn))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -396,9 +421,8 @@ public class PobranieForm extends javax.swing.JFrame {
 
     
     private void ImieEditText2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ImieEditText2KeyTyped
-        if(ImieEditText2.getText().length() > 255
-        || !Character.isAlphabetic(evt.getKeyChar()) 
-        && evt.getKeyChar() != ' ') {
+        if(ImieEditText2.getText().length() >= 255
+        || !Character.isAlphabetic(evt.getKeyChar())) {
             evt.consume();
         }
     }//GEN-LAST:event_ImieEditText2KeyTyped
@@ -406,6 +430,8 @@ public class PobranieForm extends javax.swing.JFrame {
     private void NazwiskoEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwiskoEditTextKeyTyped
         if(!Character.isAlphabetic(evt.getKeyChar()) && evt.getKeyChar() != ' ' &&
                 evt.getKeyChar() != '-') {
+            evt.consume();
+        } if(NazwiskoEditText.getText().length() >= 255) {
             evt.consume();
         }
     }//GEN-LAST:event_NazwiskoEditTextKeyTyped
@@ -417,7 +443,7 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_PeselEditTextKeyTyped
 
     private void AdresEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresEditTextKeyTyped
-        if(AdresEditText.getText().length() > 255 ||
+        if(AdresEditText.getText().length() >= 255 ||
                 !Character.isLetterOrDigit(evt.getKeyChar()) &&
                 evt.getKeyChar()!= ' ' && evt.getKeyChar() != '/') {
             evt.consume();
@@ -429,7 +455,9 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_NazwaBankuEditText3KeyTyped
 
     private void AdresBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresBankuEditText1KeyTyped
-        // TODO add your handling code here:
+        if(AdresBankuEditText1.getText().length() >= 128) {
+            evt.consume();
+        }
     }//GEN-LAST:event_AdresBankuEditText1KeyTyped
 
     private void MiastoBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MiastoBankuEditText1KeyTyped
@@ -586,6 +614,39 @@ public class PobranieForm extends javax.swing.JFrame {
         session.close();
     }//GEN-LAST:event_PobierzKrewBtnActionPerformed
 
+    private void EditChoosedPersonBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditChoosedPersonBtnActionPerformed
+        int id_osoby;
+         try {
+            id_osoby = ((OsobyZnalezioneModel) ListaZnalezionychOsob.getModel()).getIdOsoby(ListaZnalezionychOsob.getSelectedIndex());
+        } catch(NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Nie wybrano osoby.");
+            return;
+        }
+        Session session = factory.openSession();
+        Osoba o = session.find(Osoba.class, id_osoby);
+        OsobaJFrame ojf = new OsobaJFrame(factory, o);
+        ojf.showEditForm();
+        session.close();
+        this.dispose();
+    }//GEN-LAST:event_EditChoosedPersonBtnActionPerformed
+
+    private void EditBankBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBankBtnActionPerformed
+        int id_banku;
+         try {
+            id_banku = ((BankiZnalezioneListModel) ListaZnalezionychBankow.getModel()).getIdBanku(ListaZnalezionychBankow.getSelectedIndex());
+        } catch(NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Nie wybrano osoby.");
+            return;
+        }
+        Session session = factory.openSession();
+        Bank b = session.find(Bank.class, id_banku);
+        BankJFrame bjf = new BankJFrame(factory);
+        bjf.loadBank(b);
+        bjf.showEditForm();
+        session.close();
+        this.dispose();
+    }//GEN-LAST:event_EditBankBtnActionPerformed
+
     private Date composeDateTogether() {
         Calendar c = Calendar.getInstance();
         c.setTime(this.PolDataPobrania);
@@ -648,6 +709,8 @@ public class PobranieForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CzasGodzinyComboBox;
     private javax.swing.JComboBox<String> CzasMinutyComboBox;
     private javax.swing.JButton DateChoiceBtn;
+    private javax.swing.JButton EditBankBtn;
+    private javax.swing.JButton EditChoosedPersonBtn;
     private javax.swing.JButton FromLastFormBtn;
     private javax.swing.JTextField ImieEditText2;
     private javax.swing.JTextField KrajBankuEditText1;
@@ -681,4 +744,75 @@ public class PobranieForm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     // End of variables declaration//GEN-END:variables
+
+    void showEditForm() {
+        this.setTitle("WYBIERZ OSOB�");
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        EditChoosedPersonBtn.setBackground(Color.red);
+        jTabbedPane2.remove(jPanel3);
+        PobierzKrewBtn.setEnabled(false);
+        PobranieForm t = this;
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+               t.setVisible(true);
+            }
+        });
+    }
+    void showEditBankForm() {
+        this.setTitle("WYBIERZ BANK");
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(PobranieForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        EditBankBtn.setBackground(Color.red);
+        jTabbedPane2.remove(jPanel1);
+        PobierzKrewBtn.setEnabled(false);
+        PobranieForm t = this;
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+               t.setVisible(true);
+            }
+        });
+    }
 }
