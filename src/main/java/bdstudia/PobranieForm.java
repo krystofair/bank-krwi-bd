@@ -27,7 +27,7 @@ public class PobranieForm extends javax.swing.JFrame {
    Pobranie pobranie;
    Date PolDataPobrania;
    
-   public void wczytajOsobe(Osoba o) {
+   public void loadPerson(Osoba o) {
        this.LastPerson = o;
    }
 
@@ -92,7 +92,7 @@ public class PobranieForm extends javax.swing.JFrame {
 
         jLabel1.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("POBIERANIE KRWI.");
         setResizable(false);
 
@@ -421,9 +421,8 @@ public class PobranieForm extends javax.swing.JFrame {
 
     
     private void ImieEditText2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ImieEditText2KeyTyped
-        if(ImieEditText2.getText().length() > 255
-        || !Character.isAlphabetic(evt.getKeyChar()) 
-        && evt.getKeyChar() != ' ') {
+        if(ImieEditText2.getText().length() >= 255
+        || !Character.isAlphabetic(evt.getKeyChar())) {
             evt.consume();
         }
     }//GEN-LAST:event_ImieEditText2KeyTyped
@@ -431,6 +430,8 @@ public class PobranieForm extends javax.swing.JFrame {
     private void NazwiskoEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwiskoEditTextKeyTyped
         if(!Character.isAlphabetic(evt.getKeyChar()) && evt.getKeyChar() != ' ' &&
                 evt.getKeyChar() != '-') {
+            evt.consume();
+        } if(NazwiskoEditText.getText().length() >= 255) {
             evt.consume();
         }
     }//GEN-LAST:event_NazwiskoEditTextKeyTyped
@@ -442,7 +443,7 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_PeselEditTextKeyTyped
 
     private void AdresEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresEditTextKeyTyped
-        if(AdresEditText.getText().length() > 255 ||
+        if(AdresEditText.getText().length() >= 255 ||
                 !Character.isLetterOrDigit(evt.getKeyChar()) &&
                 evt.getKeyChar()!= ' ' && evt.getKeyChar() != '/') {
             evt.consume();
@@ -454,7 +455,9 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_NazwaBankuEditText3KeyTyped
 
     private void AdresBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresBankuEditText1KeyTyped
-        // TODO add your handling code here:
+        if(AdresBankuEditText1.getText().length() >= 128) {
+            evt.consume();
+        }
     }//GEN-LAST:event_AdresBankuEditText1KeyTyped
 
     private void MiastoBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MiastoBankuEditText1KeyTyped
@@ -622,7 +625,7 @@ public class PobranieForm extends javax.swing.JFrame {
         Session session = factory.openSession();
         Osoba o = session.find(Osoba.class, id_osoby);
         OsobaJFrame ojf = new OsobaJFrame(factory, o);
-        ojf.pokazformularz();
+        ojf.showEditForm();
         session.close();
         this.dispose();
     }//GEN-LAST:event_EditChoosedPersonBtnActionPerformed
@@ -743,6 +746,7 @@ public class PobranieForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void showEditForm() {
+        this.setTitle("WYBIERZ OSOBÊ");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -766,6 +770,7 @@ public class PobranieForm extends javax.swing.JFrame {
         }
         //</editor-fold>
         EditChoosedPersonBtn.setBackground(Color.red);
+        jTabbedPane2.remove(jPanel3);
         PobierzKrewBtn.setEnabled(false);
         PobranieForm t = this;
         /* Create and display the form */
@@ -776,6 +781,7 @@ public class PobranieForm extends javax.swing.JFrame {
         });
     }
     void showEditBankForm() {
+        this.setTitle("WYBIERZ BANK");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

@@ -72,7 +72,7 @@ public class OsobaJFrame extends javax.swing.JFrame {
         GrupaKrwiComboBox = new javax.swing.JComboBox<>();
         EdytujButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DODAWANIE OSOBY");
 
         jLabel1.setText("IdOsoby :");
@@ -252,87 +252,46 @@ public class OsobaJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_SprawdButtonActionPerformed
 
     private void ImieEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ImieEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(!(((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122))))
-        {            
+        if(ImieEditText.getText().length() >= 255
+        || !Character.isAlphabetic(evt.getKeyChar())) {
             evt.consume();
-        }else if((((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122)))){
-            if(!ImieEditText.getText().isEmpty()){
-                String buff = ImieEditText.getText() + c;
-                if(buff.length()>255){                    
-                    evt.consume();
-                }
-            }
-        }       
+        }    
     }//GEN-LAST:event_ImieEditTextKeyTyped
 
     private void NazwiskoEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwiskoEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(!(((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122))))
-        {            
+        if(!Character.isAlphabetic(evt.getKeyChar()) && evt.getKeyChar() != ' ' &&
+                evt.getKeyChar() != '-') {
             evt.consume();
-        }else if((((c>=65)&&(c<=90)) || ((c>=97)&&(c<=122)))){
-            if(!NazwiskoEditText.getText().isEmpty()){
-                String buff = NazwiskoEditText.getText() + c;
-                if(buff.length()>255){                    
-                    evt.consume();
-                }
-            }
-        }   
+        }
+        if(NazwiskoEditText.getText().length() >= 255
+        || !Character.isAlphabetic(evt.getKeyChar())) {
+            evt.consume();
+        }  
     }//GEN-LAST:event_NazwiskoEditTextKeyTyped
 
     private void PeselEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PeselEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(!((c>='0') && (c<='9'))) 
-        {            
+        if(!Character.isDigit(evt.getKeyChar())
+                || PeselEditText.getText().length() >= 11){
             evt.consume();
-        }else if((c>='0') && (c<='9')){
-            if(!PeselEditText.getText().isEmpty()){
-                String buff = PeselEditText.getText() + c;
-                if(buff.length()>11){                    
-                    evt.consume();
-                }
-            }
+            
         }
-        
     }//GEN-LAST:event_PeselEditTextKeyTyped
 
     private void AdresEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresEditTextKeyTyped
         char c = evt.getKeyChar();
-        if(! (((c>=65)&&(c<=90)) 
-                || ((c>=97)&&(c<=122)) 
-                || ((c>=47) && (c<=57)) 
-                || (c == KeyEvent.VK_SPACE) 
-                ))
-        {            
+        if(! ( Character.isAlphabetic(c)
+                || Character.isDigit(c)
+                || (c == ' ') || c == '-' || c=='_' || c=='/'
+                )) {            
             evt.consume();
-        }else if((((c>=65)&&(c<=90)) 
-                || ((c>=97)&&(c<=122)) 
-                || ((c>=47) && (c<=57))
-                || (c == KeyEvent.VK_SPACE)
-                ))
-        {
-            if(!AdresEditText.getText().isEmpty()){
-                String buff = AdresEditText.getText() + c;
-                if(buff.length()>255){                    
-                    evt.consume();
-                }
-            }
         }
+        if(AdresEditText.getText().length() > 255) evt.consume();
     }//GEN-LAST:event_AdresEditTextKeyTyped
 
     private void TelefonEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TelefonEditTextKeyTyped
-        char c = evt.getKeyChar();
-        if(!((c>='0') && (c<='9'))) 
-        {            
+        if(!Character.isDigit(evt.getKeyChar())
+                || TelefonEditText.getText().length() >= 9 ) {
             evt.consume();
-        }else if((c>='0') && (c<='9')){
-            if(!TelefonEditText.getText().isEmpty()){
-                String buff = TelefonEditText.getText() + c;
-                if(buff.length()>9){                    
-                    evt.consume();
-                }
-            }
         }
     }//GEN-LAST:event_TelefonEditTextKeyTyped
 
@@ -388,13 +347,43 @@ public class OsobaJFrame extends javax.swing.JFrame {
         PeselEditText.setEditable(true);
         GrupaKrwiComboBox.setEnabled(true);
         ZatwierdzButton.setEnabled(false);
-        
-        
-        
     }//GEN-LAST:event_EdytujButtonActionPerformed
 
+    public void showEditForm() {
+        this.setTitle("EDYTOWANIE OSOBY");
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(OsobaJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(OsobaJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(OsobaJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(OsobaJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        OsobaJFrame t = this;
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                t.setVisible(true);
+            }
+        });
+    }
     
-    public void pokazformularz() {
+    public void showAddForm() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

@@ -18,6 +18,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class BankKrwiApp extends javax.swing.JFrame {
     
     SessionFactory FactoryObj;
+    Osoba InnerPerson;
 
     /**
      * Creates new form BankKrwiApp
@@ -48,8 +49,9 @@ public class BankKrwiApp extends javax.swing.JFrame {
         RealizacjeBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("BANK KRWI");
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setText("Program zarz¹dzania bankami krwi");
@@ -142,7 +144,8 @@ public class BankKrwiApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddPersonBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPersonBtnActionPerformed
-        // TODO add your handling code here:
+        OsobaJFrame ojf = new OsobaJFrame(FactoryObj);
+        ojf.showAddForm();
     }//GEN-LAST:event_AddPersonBtnActionPerformed
 
     private void EditPersonBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditPersonBtnActionPerformed
@@ -151,7 +154,8 @@ public class BankKrwiApp extends javax.swing.JFrame {
     }//GEN-LAST:event_EditPersonBtnActionPerformed
 
     private void AddBankBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBankBtnActionPerformed
-        // TODO add your handling code here:
+        BankJFrame bjf = new BankJFrame(FactoryObj);
+        bjf.showAddForm();
     }//GEN-LAST:event_AddBankBtnActionPerformed
 
     private void EditBankBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBankBtnActionPerformed

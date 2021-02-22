@@ -81,6 +81,7 @@ public class BankJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DODAWANIE BANKU");
+        setMinimumSize(new java.awt.Dimension(292, 374));
 
         EXECUTE_BUTTON.setText("Dodaj");
         EXECUTE_BUTTON.addActionListener(new java.awt.event.ActionListener() {
@@ -89,16 +90,41 @@ public class BankJFrame extends javax.swing.JFrame {
             }
         });
 
+        jTF_bank_name.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTF_bank_name.setToolTipText("Nazwa Banku");
         jTF_bank_name.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jTF_bank_name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTF_bank_nameKeyTyped(evt);
+            }
+        });
 
+        jTF_bank_adres.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTF_bank_adres.setToolTipText("Adres");
 
+        jTF_bank_miasto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTF_bank_miasto.setToolTipText("Miasto");
+        jTF_bank_miasto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTF_bank_miastoKeyTyped(evt);
+            }
+        });
 
+        jTF_bank_kodpoczt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTF_bank_kodpoczt.setToolTipText("Kod Pocztowy");
+        jTF_bank_kodpoczt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTF_bank_kodpocztKeyTyped(evt);
+            }
+        });
 
+        jTF_bank_kraj.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTF_bank_kraj.setToolTipText("Kraj");
+        jTF_bank_kraj.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTF_bank_krajKeyTyped(evt);
+            }
+        });
 
         jLabel2.setText("Nazwa Banku");
 
@@ -117,7 +143,7 @@ public class BankJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(82, 82, 82)
                 .addComponent(EXECUTE_BUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -153,7 +179,7 @@ public class BankJFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(IdLoadedBank)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTF_bank_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,6 +203,8 @@ public class BankJFrame extends javax.swing.JFrame {
                 .addComponent(EXECUTE_BUTTON)
                 .addContainerGap())
         );
+
+        jTF_bank_name.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -240,12 +268,44 @@ public class BankJFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Nie uda³o siê wyedytowaæ banku");
                 }
                 sesja.close();
+                JOptionPane.showMessageDialog(this, "Pomyœlnie wyedytowano wpis banku.");
             }
+            
+            this.dispose();
         }
-        this.dispose();
     }//GEN-LAST:event_EXECUTE_BUTTONActionPerformed
 
-    void pokaz_formularz(){
+    private void jTF_bank_kodpocztKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTF_bank_kodpocztKeyTyped
+        if(jTF_bank_kodpoczt.getText().length() >= 32) evt.consume();
+        if( !Character.isDigit(evt.getKeyChar()) && evt.getKeyChar() != ' ' && evt.getKeyChar()!='-') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTF_bank_kodpocztKeyTyped
+
+    private void jTF_bank_nameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTF_bank_nameKeyTyped
+        if(jTF_bank_name.getText().length() >= 255) evt.consume();
+        if( Character.isDigit(evt.getKeyChar()) || !Character.isAlphabetic(evt.getKeyChar())
+                && evt.getKeyChar() != ' ') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTF_bank_nameKeyTyped
+
+    private void jTF_bank_krajKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTF_bank_krajKeyTyped
+        if(jTF_bank_kraj.getText().length() >= 255) evt.consume();
+        if( Character.isDigit(evt.getKeyChar()) || !Character.isAlphabetic(evt.getKeyChar())
+                && evt.getKeyChar() != ' ') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTF_bank_krajKeyTyped
+
+    private void jTF_bank_miastoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTF_bank_miastoKeyTyped
+        if(jTF_bank_miasto.getText().length() >= 64
+                || !Character.isAlphabetic(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTF_bank_miastoKeyTyped
+
+    void showAddForm(){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -294,6 +354,7 @@ public class BankJFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void showEditForm() {
+        this.setTitle("EDYTUJ BANK");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -316,8 +377,7 @@ public class BankJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BankJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        IdLoadedBank.setText(Integer.toString(bank.getIdbanku()));
+        IdLoadedBank.setText("ID BANKU: " + Integer.toString(bank.getIdbanku()));
         BankJFrame t = this;
         EXECUTE_BUTTON.setText("Edytuj");
         /* Create and display the form */
