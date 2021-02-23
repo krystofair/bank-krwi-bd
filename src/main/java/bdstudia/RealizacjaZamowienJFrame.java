@@ -95,7 +95,8 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         ListaZnalezionychRealizacjiJList = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("REALIZACJE");
 
         ListaZnalezionychZamowien.setModel(new WynikZamowieniaListModel());
         ListaZnalezionychZamowien.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

@@ -148,11 +148,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Zam&#xf3;wienia"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ZamowieniaBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="RealizacjeBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Realizacje"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RealizacjeBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="NowePobranieBtn">
       <Properties>
