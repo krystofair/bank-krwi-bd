@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.swing.JList;
 
 
 /**
@@ -35,7 +36,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
     private Realizacjazamowienia r;    
     private List<WynikZamowienia> wynik_zamowienia_list;
     private List<Realizacjazamowienia> realizacja_list;
-     
+    private RealizacjazamowieniaListModel Model = new RealizacjazamowieniaListModel();
     /**
      * Creates new form ZamowieniaJFrame
      */
@@ -62,7 +63,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         KryteriumCB = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         KryteriumET = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        WybierzZamowienieButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -89,7 +90,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         OTelLabel = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         OAdresLabel = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        RealizujButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         ListaZnalezionychRealizacjiJList = new javax.swing.JList<>();
@@ -123,10 +124,10 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Wybierz Zamówienie");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        WybierzZamowienieButton.setText("Wybierz Zamówienie");
+        WybierzZamowienieButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                WybierzZamowienieButtonActionPerformed(evt);
             }
         });
 
@@ -146,7 +147,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                         .addComponent(KryteriumET, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SzukajButton))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(WybierzZamowienieButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,7 +162,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(WybierzZamowienieButton)
                 .addContainerGap())
         );
 
@@ -187,7 +188,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
 
         jLabel8.setText("Liczba Dawek :");
 
-        jLabel9.setText("Data z³o¿enia ");
+        jLabel9.setText("Data z³o¿enia");
 
         jLabel10.setText("zamówienia :");
 
@@ -328,7 +329,12 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Realizuj");
+        RealizujButton.setText("Realizuj");
+        RealizujButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RealizujButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -337,7 +343,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(RealizujButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -352,13 +358,14 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(RealizujButton)
                 .addContainerGap())
         );
 
         jTabbedPane2.addTab("Szczegó³y Zamówienia", jPanel3);
 
         ListaZnalezionychRealizacjiJList.setModel(new RealizacjazamowieniaListModel());
+        ListaZnalezionychRealizacjiJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(ListaZnalezionychRealizacjiJList);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -384,10 +391,10 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,7 +430,8 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         KryteriumET.setText("");
     }//GEN-LAST:event_KryteriumCBActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void WybierzZamowienieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WybierzZamowienieButtonActionPerformed
+        
         ListaZnalezionychZamowien.getSelectedIndex();
         z = new Zamowienie();
         o = new Osoba();
@@ -432,6 +440,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         int id_zamowienia = ((WynikZamowieniaListModel)ListaZnalezionychZamowien.getModel()).getIdWynikuZamowienia(ListaZnalezionychZamowien.getSelectedIndex());
         Session sesja = factory.openSession();
         EntityManager em = factory.createEntityManager();
+        
         try{
             z = em.createQuery("FROM zamowienia WHERE idzamowienia = :idzamowienia ", Zamowienie.class)
                     .setParameter("idzamowienia", id_zamowienia)
@@ -443,6 +452,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "nie znaleziono zamowienia",
                         "RealizacjaZamowien. B³¹d.", JOptionPane.WARNING_MESSAGE);
         }
+        
         try{
             o = em.createQuery("FROM osoby WHERE idosoby = :idosoby ", Osoba.class)
                     .setParameter("idosoby", z.getIdosoby())
@@ -456,6 +466,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "nie znaleziono osoby",
                         "RealizacjaZamowien. B³¹d.", JOptionPane.WARNING_MESSAGE);
         }
+        
         try{
             g = em.createQuery("FROM grupykrwi WHERE  idgrupykrwi = :idgrupykrwi ", GrupaKrwi.class)
                     .setParameter("idgrupykrwi", o.getIdgrupykrwi())
@@ -465,6 +476,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "nie znaleziono grupyKrwi",
                         "RealizacjaZamowien. B³¹d.", JOptionPane.WARNING_MESSAGE);
         }
+        
         try{
             p = em.createQuery("FROM produkty WHERE  idproduktu = :idproduktu ", Produkt.class)
                     .setParameter("idproduktu", z.getIdproduktu())
@@ -476,7 +488,93 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         }
         StanRealizacji();
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_WybierzZamowienieButtonActionPerformed
+
+    private void RealizujButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RealizujButtonActionPerformed
+        
+        Session sesja = factory.openSession();
+        EntityManager em = factory.createEntityManager();
+        List<Realizacjazamowienia> Lista_realizacji;
+        List<WynikPobrania> WynikLista;
+        Lista_realizacji = new ArrayList<>();    
+//        Lista_realizacji = em.createNativeQuery(
+//            "SELECT * "
+//            + "FROM realizacjezamowien "
+//            + "WHERE IDZamowienia = " + z.getIdzamowienia()
+//        ).getResultList();
+        List<Object[]> r_o = em.createNativeQuery(
+            "SELECT * "
+            + "FROM realizacjezamowien "
+            + "WHERE IDZamowienia = " + z.getIdzamowienia()
+        ).getResultList();
+        sesja.close();
+        em.close();
+        for(Object[] A : r_o){
+           r = new Realizacjazamowienia();
+           r.setIdrealizacji((Integer) A[0]);
+           r.setIdpobrania((Integer) A[1]);
+           r.setIdzamowienia((Integer) A[2]);           
+           Lista_realizacji.add(r);
+        }
+        
+        int ilosc_dawek = z.getIlosc() - Lista_realizacji.size();
+        Date data_graniczna_gorna = new Date(System.currentTimeMillis());
+        Date data_graniczna_dolna = data_graniczna(data_graniczna_gorna,p.getOkresprzydatnosci());
+        do{ 
+            sesja = factory.openSession();
+            em = factory.createEntityManager();
+            List<Object[]> WynikiOBJ = em.createNativeQuery(
+              " select x.IDPobrania, x.Rodzaj, x.WskaznikRh, x.DataPobrania "
+                  + "from ( "
+                  + "SELECT p.IDPobrania, og.Rodzaj, og.WskaznikRh, p.DataPobrania "
+                  + "FROM ( select pob.IDpobrania, pob.IDOsoby, prd.Typ, pob.DataPobrania "
+                  + "FROM pobrania pob INNER JOIN produkty prd "
+                  + "ON pob.IDProduktu = prd.IDProduktu "
+                  + "WHERE prd.Typ = '"+p.getTyp()
+                  + "' ) p INNER JOIN ( "
+                  + "select o.IDOsoby, g.Rodzaj, g.WskaznikRh "
+                  + "from osoby o inner join grupykrwi g "
+                  + "ON o.IDGrupyKrwi = g.IDGrupyKrwi "
+                  + "WHERE Rodzaj LIKE '"+g.getRodzaj()+"' "
+                  + "AND WskaznikRh LIKE '"+g.getWskaznikrh()+"' ) og "
+                  + "ON p.IDOsoby = og.IDOsoby "
+                  + "WHERE DataPobrania between '"+data_graniczna_dolna+"' "
+                  + "AND  '2044-03-26 23:59:59.0' ) x "
+                  + "WHERE x.IDPobrania "
+                  + "NOT IN ( SELECT r.IDPobrania "
+                  + "FROM realizacjezamowien r );"
+           ).getResultList();
+           sesja.close();
+           WynikLista = new ArrayList<>();
+           for(Object[] w : WynikiOBJ){        
+               WynikPobrania WZ = new WynikPobrania(w);               
+               WynikLista.add(WZ);           
+           }
+           if(WynikLista.isEmpty()){
+               JOptionPane.showMessageDialog(this, "nie znaleziono szukanych pobran",
+                        "RealizacjaZamowien. B³¹d.", JOptionPane.WARNING_MESSAGE);
+               break;
+           }
+           Realizacjazamowienia RZ = new Realizacjazamowienia();
+           RZ.setIdpobrania(WynikLista.get(0).getIdpobrania());
+           RZ.setIdzamowienia(z.getIdzamowienia());
+           sesja = factory.openSession();
+           em = factory.createEntityManager();
+            try{
+                sesja.beginTransaction();
+                sesja.save(RZ);
+                sesja.getTransaction().commit();
+                
+                JOptionPane.showMessageDialog(this, "Pomyœlnie dodano realizacje do bazy.",
+                        "Dodawanie realizacji. Info.", JOptionPane.INFORMATION_MESSAGE);                
+            }catch(java.lang.IllegalStateException ise){
+                JOptionPane.showMessageDialog(this, "DEBUG IllegalStateException in realizacjaJFrame.");
+            } finally {
+                em.close();
+            }           
+        }while((ilosc_dawek > 0) && !WynikLista.isEmpty());
+        StanRealizacji();        
+    }//GEN-LAST:event_RealizujButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -626,27 +724,45 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                 .dodajZamowienia(wynik_zamowienia_list);
         
     }  
-    public void StanRealizacji(){
+    
+    public void StanRealizacji(){       
+        
         Session sesja = factory.openSession();
         EntityManager em = factory.createEntityManager();
-        realizacja_list = new ArrayList<>();    
-        realizacja_list = em.createNativeQuery(
+        List<Realizacjazamowienia> r_l = new ArrayList<>();
+        
+        List<Object[]> r_o = em.createNativeQuery(
             "SELECT * "
             + "FROM realizacjezamowien "
             + "WHERE IDZamowienia = " + z.getIdzamowienia()
         ).getResultList();
-        if(realizacja_list.isEmpty()){
+        
+        for(Object[] A : r_o){
+           r = new Realizacjazamowienia();
+           r.setIdrealizacji((Integer) A[0]);
+           r.setIdpobrania((Integer) A[1]);
+           r.setIdzamowienia((Integer) A[2]);           
+           r_l.add(r);
+        }                       
+      
+        if(r_l.isEmpty()){
             RStatusLabel.setText("Nie Zrealizowane");
-        }else if(!(realizacja_list.isEmpty()) && realizacja_list.size()<z.getIlosc()){
+        }else if(!(r_l.isEmpty()) && r_l.size()<z.getIlosc()){
             RStatusLabel.setText("Czêœciowo Zrealizowane");           
-        }else if(realizacja_list.size()==z.getIlosc()){
+        }else if(r_l.size()==z.getIlosc()){
             RStatusLabel.setText("Zrealizowane");
         }else{
             JOptionPane.showMessageDialog(this, " B³¹d StanRealizacji() !!! ");
-        }        
-        ((RealizacjazamowieniaListModel)
-            ListaZnalezionychRealizacjiJList
-            .getModel()).dodajRealizacjeZamowien(realizacja_list);
+        }             
+        sesja.close();               
+        
+        ((RealizacjazamowieniaListModel)ListaZnalezionychRealizacjiJList.getModel()).dodajRealizacjeZamowien(r_l);
+        
+    }
+    public static Date data_graniczna(Date d,int o){
+        Long TL;
+        TL = 86400000L*o;        
+        return new Date(d.getTime()-TL);
     }
     
 
@@ -666,9 +782,9 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel RIloscLabel;
     private javax.swing.JLabel RProduktLabel;
     private javax.swing.JLabel RStatusLabel;
+    private javax.swing.JButton RealizujButton;
     private javax.swing.JButton SzukajButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton WybierzZamowienieButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
