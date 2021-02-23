@@ -5,7 +5,6 @@
  */
 package bdstudia;
 
-import java.awt.event.KeyEvent;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -24,6 +23,11 @@ public class OsobaJFrame extends javax.swing.JFrame {
      */
     SessionFactory sf_ref;
     private Osoba nowaosoba;
+    private BankKrwiApp parent;
+    
+    public void setParent(BankKrwiApp bkp) {
+        parent = bkp;
+    }
     
     public OsobaJFrame(SessionFactory sf,Osoba o){
         this.sf_ref = sf;
@@ -476,6 +480,9 @@ public class OsobaJFrame extends javax.swing.JFrame {
         this.nowaosoba.setTelefon(TelefonEditText.getText());
         this.nowaosoba.setIdgrupykrwi(CraftGrupaKrwi());
         this.nowaosoba.setDataurodzenia(PeselToDate());
+        try {
+            parent.updateOsoba(nowaosoba);
+        } catch(NullPointerException npe) {}
     }
     public boolean CzyIstnieje(){
        Session sesja = sf_ref.openSession();

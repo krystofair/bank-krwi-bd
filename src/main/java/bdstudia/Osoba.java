@@ -91,6 +91,6 @@ public class Osoba implements Serializable {
     public Date getDataurodzenia() {
         return dataurodzenia;
     }
-    
+ 
     
 }
