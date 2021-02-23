@@ -300,7 +300,7 @@ public class BankJFrame extends javax.swing.JFrame {
 
     private void jTF_bank_miastoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTF_bank_miastoKeyTyped
         if(jTF_bank_miasto.getText().length() >= 64
-                || !Character.isAlphabetic(evt.getKeyChar())) {
+                || !Character.isAlphabetic(evt.getKeyChar()) || evt.getKeyChar() != ' ') {
             evt.consume();
         }
     }//GEN-LAST:event_jTF_bank_miastoKeyTyped
