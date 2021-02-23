@@ -451,7 +451,11 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_AdresEditTextKeyTyped
 
     private void NazwaBankuEditText3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwaBankuEditText3KeyTyped
-        // TODO add your handling code here:
+        if(NazwaBankuEditText3.getText().length() >= 255) evt.consume();
+        if( Character.isDigit(evt.getKeyChar()) || !Character.isAlphabetic(evt.getKeyChar())
+                && evt.getKeyChar() != ' ') {
+            evt.consume();
+        }
     }//GEN-LAST:event_NazwaBankuEditText3KeyTyped
 
     private void AdresBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AdresBankuEditText1KeyTyped
@@ -461,11 +465,18 @@ public class PobranieForm extends javax.swing.JFrame {
     }//GEN-LAST:event_AdresBankuEditText1KeyTyped
 
     private void MiastoBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MiastoBankuEditText1KeyTyped
-        // TODO add your handling code here:
+        if(MiastoBankuEditText1.getText().length() >= 64
+                || !Character.isAlphabetic(evt.getKeyChar())) {
+            evt.consume();
+        }
     }//GEN-LAST:event_MiastoBankuEditText1KeyTyped
 
     private void KrajBankuEditText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KrajBankuEditText1KeyTyped
-        // TODO add your handling code here:
+        if(KrajBankuEditText1.getText().length() >= 255) evt.consume();
+        if( Character.isDigit(evt.getKeyChar()) || !Character.isAlphabetic(evt.getKeyChar())
+                && evt.getKeyChar() != ' ') {
+            evt.consume();
+        }
     }//GEN-LAST:event_KrajBankuEditText1KeyTyped
 
     private void SzukajHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SzukajHandler
