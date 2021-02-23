@@ -33,8 +33,8 @@ public static void main(String[] args) {
     SessionFactory factory = meta.getSessionFactoryBuilder().build();
     //PobranieForm zjf = new PobranieForm(factory);
     //zjf.pokazFormularz();
-    RealizacjaZamowienJFrame zjf = new RealizacjaZamowienJFrame(factory);
-    zjf.pokaz_formularz();
+  RealizacjaZamowienJFrame zjf = new RealizacjaZamowienJFrame(factory);
+  zjf.pokaz_formularz();
     //ZamowieniaJFrame zjf = new ZamowieniaJFrame(factory);
     //zjf.pokaz_formularz();
     //BankJFrame B = new BankJFrame(factory);
@@ -44,7 +44,22 @@ public static void main(String[] args) {
      g.setRodzaj("A");
      g.setWskaznikrh("-");
      Session sesja = factory.openSession();
+     Zamowienie z = new Zamowienie();
+     z.setIdzamowienia(4);
      EntityManager em = factory.createEntityManager();
+     List<Object[]> r_l = em.createNativeQuery(
+            "SELECT * "
+            + "FROM realizacjezamowien "
+            + "WHERE IDZamowienia = " + z.getIdzamowienia()
+        ).getResultList();
+        for(Object[] o : r_l){
+            Realizacjazamowienia r = new Realizacjazamowienia();
+            r.setIdrealizacji((Integer) o[0]);
+            r.setIdzamowienia((Integer) o[1]);
+            r.setIdpobrania((Integer) o[2]);
+           
+            System.out.println("Id realizacji -- "+r.getIdrealizacji());
+        }
         Date data_graniczna_gorna = new Date(System.currentTimeMillis());
         Date data_graniczna_dolna = RealizacjaZamowienJFrame.data_graniczna(data_graniczna_gorna,730);
         String idZ = "2020-02-16 21:59:01",r = "2022-02-16 21:59:01";
@@ -85,7 +100,7 @@ public static void main(String[] args) {
         for(WynikPobrania w: WynikLista){
             System.out.println(w.toString());
         }
-*/
-        
+
+        */
     }
 }   

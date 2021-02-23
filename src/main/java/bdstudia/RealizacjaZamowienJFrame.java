@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.swing.JList;
 
 
 /**
@@ -35,7 +36,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
     private Realizacjazamowienia r;    
     private List<WynikZamowienia> wynik_zamowienia_list;
     private List<Realizacjazamowienia> realizacja_list;
-    
+    private RealizacjazamowieniaListModel Model = new RealizacjazamowieniaListModel();
     /**
      * Creates new form ZamowieniaJFrame
      */
@@ -496,15 +497,32 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         List<Realizacjazamowienia> Lista_realizacji;
         List<WynikPobrania> WynikLista;
         Lista_realizacji = new ArrayList<>();    
-        Lista_realizacji = em.createNativeQuery(
+//        Lista_realizacji = em.createNativeQuery(
+//            "SELECT * "
+//            + "FROM realizacjezamowien "
+//            + "WHERE IDZamowienia = " + z.getIdzamowienia()
+//        ).getResultList();
+        List<Object[]> r_o = em.createNativeQuery(
             "SELECT * "
             + "FROM realizacjezamowien "
             + "WHERE IDZamowienia = " + z.getIdzamowienia()
         ).getResultList();
+        sesja.close();
+        em.close();
+        for(Object[] A : r_o){
+           r = new Realizacjazamowienia();
+           r.setIdrealizacji((Integer) A[0]);
+           r.setIdpobrania((Integer) A[1]);
+           r.setIdzamowienia((Integer) A[2]);           
+           Lista_realizacji.add(r);
+        }
+        
         int ilosc_dawek = z.getIlosc() - Lista_realizacji.size();
         Date data_graniczna_gorna = new Date(System.currentTimeMillis());
         Date data_graniczna_dolna = data_graniczna(data_graniczna_gorna,p.getOkresprzydatnosci());
-        do{            
+        do{ 
+            sesja = factory.openSession();
+            em = factory.createEntityManager();
             List<Object[]> WynikiOBJ = em.createNativeQuery(
               " select x.IDPobrania, x.Rodzaj, x.WskaznikRh, x.DataPobrania "
                   + "from ( "
@@ -512,7 +530,8 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                   + "FROM ( select pob.IDpobrania, pob.IDOsoby, prd.Typ, pob.DataPobrania "
                   + "FROM pobrania pob INNER JOIN produkty prd "
                   + "ON pob.IDProduktu = prd.IDProduktu "
-                  + "WHERE prd.Typ = 'osocze' ) p INNER JOIN ( "
+                  + "WHERE prd.Typ = '"+p.getTyp()
+                  + "' ) p INNER JOIN ( "
                   + "select o.IDOsoby, g.Rodzaj, g.WskaznikRh "
                   + "from osoby o inner join grupykrwi g "
                   + "ON o.IDGrupyKrwi = g.IDGrupyKrwi "
@@ -520,11 +539,12 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                   + "AND WskaznikRh LIKE '"+g.getWskaznikrh()+"' ) og "
                   + "ON p.IDOsoby = og.IDOsoby "
                   + "WHERE DataPobrania between '"+data_graniczna_dolna+"' "
-                  + "AND  '" + z.getDatazamowienia() + "' ) x "
+                  + "AND  '2044-03-26 23:59:59.0' ) x "
                   + "WHERE x.IDPobrania "
                   + "NOT IN ( SELECT r.IDPobrania "
                   + "FROM realizacjezamowien r );"
            ).getResultList();
+           sesja.close();
            WynikLista = new ArrayList<>();
            for(Object[] w : WynikiOBJ){        
                WynikPobrania WZ = new WynikPobrania(w);               
@@ -538,6 +558,8 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
            Realizacjazamowienia RZ = new Realizacjazamowienia();
            RZ.setIdpobrania(WynikLista.get(0).getIdpobrania());
            RZ.setIdzamowienia(z.getIdzamowienia());
+           sesja = factory.openSession();
+           em = factory.createEntityManager();
             try{
                 sesja.beginTransaction();
                 sesja.save(RZ);
@@ -703,20 +725,26 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         
     }  
     
-    public void StanRealizacji(){
+    public void StanRealizacji(){       
         
-        System.out.println("7");
         Session sesja = factory.openSession();
         EntityManager em = factory.createEntityManager();
-        List<Realizacjazamowienia> r_l;
-        r_l = new ArrayList<>();
-        System.out.println("1");
-        r_l = em.createNativeQuery(
+        List<Realizacjazamowienia> r_l = new ArrayList<>();
+        
+        List<Object[]> r_o = em.createNativeQuery(
             "SELECT * "
             + "FROM realizacjezamowien "
             + "WHERE IDZamowienia = " + z.getIdzamowienia()
         ).getResultList();
-        System.out.println("2");
+        
+        for(Object[] A : r_o){
+           r = new Realizacjazamowienia();
+           r.setIdrealizacji((Integer) A[0]);
+           r.setIdpobrania((Integer) A[1]);
+           r.setIdzamowienia((Integer) A[2]);           
+           r_l.add(r);
+        }                       
+      
         if(r_l.isEmpty()){
             RStatusLabel.setText("Nie Zrealizowane");
         }else if(!(r_l.isEmpty()) && r_l.size()<z.getIlosc()){
@@ -725,11 +753,11 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             RStatusLabel.setText("Zrealizowane");
         }else{
             JOptionPane.showMessageDialog(this, " B³¹d StanRealizacji() !!! ");
-        }  
-        System.out.println("3");       
+        }             
+        sesja.close();               
         
-       //((RealizacjazamowieniaListModel)ListaZnalezionychRealizacjiJList.getModel()).dodajRealizacjeZamowien(r_l);
-        System.out.println("4");
+        ((RealizacjazamowieniaListModel)ListaZnalezionychRealizacjiJList.getModel()).dodajRealizacjeZamowien(r_l);
+        
     }
     public static Date data_graniczna(Date d,int o){
         Long TL;

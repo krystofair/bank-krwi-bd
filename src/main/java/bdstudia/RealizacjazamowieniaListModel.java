@@ -10,32 +10,25 @@ import javax.swing.DefaultListModel;
 public class RealizacjazamowieniaListModel extends DefaultListModel<String>  {
     List<Integer> IdRealizacjiNaLiscie;
     public RealizacjazamowieniaListModel(){
-        IdRealizacjiNaLiscie = new ArrayList<>();
+        IdRealizacjiNaLiscie = new ArrayList<Integer>();
     }
     
     public void dodajRealizacjeZamowien(List<Realizacjazamowienia> rz){
-        if(!this.isEmpty()){
-            this.clear();
-            IdRealizacjiNaLiscie.clear();
+        
+        if(!this.isEmpty()){            
+            this.clear();            
+            IdRealizacjiNaLiscie.clear();            
         }
-        rz.forEach(e->{
-            
-         addElement(  String.valueOf(e.getIdrealizacji())
-                    + "  |zamówienie nr.: " 
-                    + String.valueOf(e.getIdzamowienia())
-                    + "  |pobranie nr.: "
-                    + String.valueOf(e.getIdpobrania())
-                            
-                    );
-//         addElement(e.getIdrealizacji()
-//                    + "  |zamówienie nr.: " 
-//                    + e.getIdzamowienia()
-//                    + "  |pobranie nr.: "
-//                    + e.getIdpobrania()
-//                            
-//                    );
-                   
-            IdRealizacjiNaLiscie.add(e.getIdrealizacji());
+        
+        rz.stream().map(r -> {            
+            return r;
+        }).map(r -> {
+            this.addElement("[  ID realizacji :"+r.getIdrealizacji()
+                    +"   |   ID zamowienia: "+ r.getIdzamowienia() 
+                    +"   |   ID pobrania:"+r.getIdpobrania()+"   ]");
+            return r;
+        }).forEachOrdered(r -> {
+            IdRealizacjiNaLiscie.add(r.getIdrealizacji());
         });
     }
 }
