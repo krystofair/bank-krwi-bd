@@ -621,6 +621,7 @@ public class PobranieForm extends javax.swing.JFrame {
         Session session = factory.openSession();
         session.beginTransaction();
             session.save(this.pobranie);
+            JOptionPane.showMessageDialog(this, "Pomy�lnie pobrano krew.");
         try{
             session.getTransaction().commit();
         } catch(RollbackException re) {
@@ -628,6 +629,7 @@ public class PobranieForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nie powiod³o siê dodanie pobrania.");
         }
         session.close();
+        this.dispose();
     }//GEN-LAST:event_PobierzKrewBtnActionPerformed
 
     private void EditChoosedPersonBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditChoosedPersonBtnActionPerformed
