@@ -31,62 +31,61 @@ public static void main(String[] args) {
     StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
     Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
     SessionFactory factory = meta.getSessionFactoryBuilder().build();
-    PobranieForm zjf = new PobranieForm(factory);
-    zjf.pokazFormularz();
-    //RealizacjaZamowienJFrame zjf = new RealizacjaZamowienJFrame(factory);
+    //PobranieForm zjf = new PobranieForm(factory);
+    //zjf.pokazFormularz();
+    RealizacjaZamowienJFrame zjf = new RealizacjaZamowienJFrame(factory);
+    zjf.pokaz_formularz();
+    //ZamowieniaJFrame zjf = new ZamowieniaJFrame(factory);
     //zjf.pokaz_formularz();
-    // ZamowieniaJFrame zjf = new ZamowieniaJFrame(factory);
-    // zjf.pokaz_formularz();
     //BankJFrame B = new BankJFrame(factory);
     //B.pokaz_formularz();
-//    Session sesja = factory.openSession();
-//    EntityManager em = factory.createEntityManager();
-//    List<Realizacjazamowienia> rz = new ArrayList<>();
-//    int idrealizacji = 1;
-//    rz = em.createNativeQuery(
-//        "SELECT * "
-//        + "FROM realizacjezamowien "
-//        + "WHERE IDRealizacji = "+idrealizacji
-//    ).getResultList();
-
-
-//        String idZ = "o";
-//        List<Object[]> WynikiOBJ = em.createNativeQuery(
-//                "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
-//                + "FROM ( "
-//                    + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
-//                    + "FROM ( "
-//                        + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
-//                        + "FROM osoby o INNER JOIN grupykrwi k "
-//                        + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "                        
-//                    + ") AS OK INNER JOIN zamowienia z "
-//                    + "ON OK.IDOsoby = z.IDOsoby "                    
-//                + ") AS OKZ INNER JOIN produkty p "
-//                + "ON OKZ.IDProduktu = p.IDProduktu "
-//                + "WHERE p.Typ LIKE '%"
-//                + idZ
-//                +"%'"
-//        )
-//        .getResultList(); 
-//        
-//        
-//        int i=0;
-//        List<WynikZamowienia> WynikLista = new ArrayList<WynikZamowienia>();
-//        for(Object[] w : WynikiOBJ){        
-//            WynikZamowienia WZ = new WynikZamowienia(w);
-//            WynikLista.add(WZ);
-//            System.out.println("Wynik " + (i+1) + ": \n");
-//            i++;
-//            System.out.println(
-//                WZ.getImie() + " " 
-//              + WZ.getNazwisko() + " " 
-//              + WZ.getRodzaj() + " " 
-//              + WZ.getWskaznikRh() + " " 
-//              + WZ.getTyp() + " " 
-//              + WZ.getIlosc() + " " 
-//              + WZ.getData_zamowienia() + " "
-//              + WZ.getIdzamowienia()
-//            );   
-//        }
+    /*
+     GrupaKrwi g = new GrupaKrwi();
+     g.setRodzaj("A");
+     g.setWskaznikrh("-");
+     Session sesja = factory.openSession();
+     EntityManager em = factory.createEntityManager();
+        Date data_graniczna_gorna = new Date(System.currentTimeMillis());
+        Date data_graniczna_dolna = RealizacjaZamowienJFrame.data_graniczna(data_graniczna_gorna,730);
+        String idZ = "2020-02-16 21:59:01",r = "2022-02-16 21:59:01";
+        List<Object[]> WynikiOBJ = em.createNativeQuery(
+                          " select x.IDPobrania, x.Rodzaj, x.WskaznikRh, x.DataPobrania "
+                                  + "from ( "
+                                  + "SELECT p.IDPobrania, og.Rodzaj, og.WskaznikRh, p.DataPobrania "
+                                  + "FROM ( select pob.IDpobrania, pob.IDOsoby, prd.Typ, pob.DataPobrania "
+                                  + "FROM pobrania pob INNER JOIN produkty prd "
+                                  + "ON pob.IDProduktu = prd.IDProduktu "
+                                  + "WHERE prd.Typ = 'osocze' ) p INNER JOIN ( "
+                                  + "select o.IDOsoby, g.Rodzaj, g.WskaznikRh "
+                                  + "from osoby o inner join grupykrwi g "
+                                  + "ON o.IDGrupyKrwi = g.IDGrupyKrwi "
+                                  + "WHERE Rodzaj LIKE '"+g.getRodzaj()+"' "
+                                  + "AND WskaznikRh LIKE '"+g.getWskaznikrh()+"' ) og "
+                                  + "ON p.IDOsoby = og.IDOsoby "
+                                  + "WHERE DataPobrania between '"+data_graniczna_dolna+"' "
+                                  + "AND  '2044-03-26 23:59:59.0' ) x "
+                                  + "WHERE x.IDPobrania "
+                                  + "NOT IN ( SELECT r.IDPobrania "
+                                  + "FROM realizacjezamowien r );"
+       )
+        .getResultList(); 
+        System.out.println(data_graniczna_dolna);
+        System.out.println(data_graniczna_dolna.toString());
+        System.out.println(data_graniczna_gorna);
+        System.out.println(data_graniczna_gorna.toString());
+        int i=0;
+        List<WynikPobrania> WynikLista = new ArrayList<>();
+        for(Object[] w : WynikiOBJ){        
+           WynikPobrania WZ = new WynikPobrania(w);
+           WynikLista.add(WZ);
+           System.out.println("Wynik " + (i+1) + ": \n");
+           i++;
+           System.out.println(WZ.toString());
+       }
+        for(WynikPobrania w: WynikLista){
+            System.out.println(w.toString());
+        }
+*/
+        
     }
 }   
