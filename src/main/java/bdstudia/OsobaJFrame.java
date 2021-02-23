@@ -285,7 +285,7 @@ public class OsobaJFrame extends javax.swing.JFrame {
         char c = evt.getKeyChar();
         if(! ( Character.isAlphabetic(c)
                 || Character.isDigit(c)
-                || (c == ' ') || c == '-' || c=='_' || c=='/'
+                || (c == ' ') || c == '-' || c=='_' || c=='/' || c==','
                 )) {            
             evt.consume();
         }
