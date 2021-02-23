@@ -15,10 +15,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
  *
  * @author krystofair
  */
-public class BankKrwiApp extends javax.swing.JFrame {
+public class BankKrwiApp extends javax.swing.JFrame{
     
-    SessionFactory FactoryObj;
-    Osoba InnerPerson;
+    private final SessionFactory FactoryObj;
+    private Osoba InnerPerson;
+    
+    public void updateOsoba(Osoba o) {
+        InnerPerson = o;
+    }
 
     /**
      * Creates new form BankKrwiApp
@@ -47,6 +51,7 @@ public class BankKrwiApp extends javax.swing.JFrame {
         EditBankBtn = new javax.swing.JButton();
         ZamowieniaBtn = new javax.swing.JButton();
         RealizacjeBtn = new javax.swing.JButton();
+        NowePobranieBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BANK KRWI");
@@ -89,6 +94,13 @@ public class BankKrwiApp extends javax.swing.JFrame {
 
         RealizacjeBtn.setText("Realizacje");
 
+        NowePobranieBtn.setText("Nowe Pobranie");
+        NowePobranieBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NowePobranieBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,21 +111,26 @@ public class BankKrwiApp extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(175, 175, 175)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(AddPersonBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(AddBankBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ZamowieniaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(58, 58, 58)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RealizacjeBtn)
+                                    .addComponent(EditBankBtn)
+                                    .addComponent(EditPersonBtn)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(89, 89, 89)
+                                .addComponent(NowePobranieBtn)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AddPersonBtn)
-                    .addComponent(AddBankBtn)
-                    .addComponent(ZamowieniaBtn))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RealizacjeBtn)
-                    .addComponent(EditBankBtn)
-                    .addComponent(EditPersonBtn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {AddBankBtn, AddPersonBtn, EditBankBtn, EditPersonBtn, RealizacjeBtn, ZamowieniaBtn});
@@ -125,7 +142,9 @@ public class BankKrwiApp extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
+                .addComponent(NowePobranieBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AddPersonBtn)
                     .addComponent(EditPersonBtn))
@@ -137,7 +156,7 @@ public class BankKrwiApp extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ZamowieniaBtn)
                     .addComponent(RealizacjeBtn))
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
 
         pack();
@@ -145,11 +164,13 @@ public class BankKrwiApp extends javax.swing.JFrame {
 
     private void AddPersonBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPersonBtnActionPerformed
         OsobaJFrame ojf = new OsobaJFrame(FactoryObj);
+        ojf.setParent(this);
         ojf.showAddForm();
     }//GEN-LAST:event_AddPersonBtnActionPerformed
 
     private void EditPersonBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditPersonBtnActionPerformed
         PobranieForm pf = new PobranieForm(FactoryObj);
+        pf.setParent(this);
         pf.showEditForm();
     }//GEN-LAST:event_EditPersonBtnActionPerformed
 
@@ -162,6 +183,12 @@ public class BankKrwiApp extends javax.swing.JFrame {
         PobranieForm pf = new PobranieForm(FactoryObj);
         pf.showEditBankForm();
     }//GEN-LAST:event_EditBankBtnActionPerformed
+
+    private void NowePobranieBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NowePobranieBtnActionPerformed
+        PobranieForm pf = new PobranieForm(FactoryObj);
+        pf.loadPerson(InnerPerson);
+        pf.pokazFormularz();
+    }//GEN-LAST:event_NowePobranieBtnActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -200,9 +227,11 @@ public class BankKrwiApp extends javax.swing.JFrame {
     private javax.swing.JButton AddPersonBtn;
     private javax.swing.JButton EditBankBtn;
     private javax.swing.JButton EditPersonBtn;
+    private javax.swing.JButton NowePobranieBtn;
     private javax.swing.JButton RealizacjeBtn;
     private javax.swing.JButton ZamowieniaBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
 }

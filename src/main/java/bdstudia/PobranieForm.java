@@ -26,6 +26,11 @@ public class PobranieForm extends javax.swing.JFrame {
    Osoba LastPerson;
    Pobranie pobranie;
    Date PolDataPobrania;
+   BankKrwiApp parent;
+   
+   public void setParent(BankKrwiApp bkp) {
+       parent = bkp;
+   }
    
    public void loadPerson(Osoba o) {
        this.LastPerson = o;
@@ -158,7 +163,7 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
-        EditChoosedPersonBtn.setText("Edytuj wybranï¿½ osobï¿½");
+        EditChoosedPersonBtn.setText("Edytuj wybran¹ osobê");
         EditChoosedPersonBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditChoosedPersonBtnActionPerformed(evt);
@@ -224,7 +229,7 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("WybÃ³r Osoby", jPanel1);
+        jTabbedPane2.addTab("Wybór Osoby", jPanel1);
 
         ListaZnalezionychBankow.setModel(new BankiZnalezioneListModel());
         ListaZnalezionychBankow.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -295,15 +300,15 @@ public class PobranieForm extends javax.swing.JFrame {
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(NazwaBankuEditText3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AdresBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(MiastoBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(MiastoBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AdresBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(NazwaBankuEditText3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(KrajBankuEditText1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addComponent(SzukajBankuBtn)
                         .addGap(33, 33, 33)
                         .addComponent(EditBankBtn)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane3)
                 .addContainerGap())
@@ -332,15 +337,15 @@ public class PobranieForm extends javax.swing.JFrame {
                     .addComponent(SzukajBankuBtn)
                     .addComponent(EditBankBtn))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("WybÃ³r Banku", jPanel3);
+        jTabbedPane2.addTab("Wybór Banku", jPanel3);
 
         jLabel10.setText("Data Pobrania:");
 
-        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew peÂ³na", "pÂ³ytki krwi" }));
+        ProduktComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "osocze", "krew pe³na", "p³ytki krwi" }));
 
         jLabel12.setText("Wytwarzany produkt:");
 
@@ -636,6 +641,7 @@ public class PobranieForm extends javax.swing.JFrame {
         Session session = factory.openSession();
         Osoba o = session.find(Osoba.class, id_osoby);
         OsobaJFrame ojf = new OsobaJFrame(factory, o);
+        ojf.setParent(parent);
         ojf.showEditForm();
         session.close();
         this.dispose();
@@ -706,6 +712,8 @@ public class PobranieForm extends javax.swing.JFrame {
         }
         //</editor-fold>
         PobranieForm t = this;
+        EditBankBtn.setEnabled(false);
+        EditChoosedPersonBtn.setEnabled(false);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -825,5 +833,9 @@ public class PobranieForm extends javax.swing.JFrame {
                t.setVisible(true);
             }
         });
+    }
+
+    private void loadPersonList() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
