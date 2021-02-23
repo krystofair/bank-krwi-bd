@@ -390,10 +390,10 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,7 +490,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_WybierzZamowienieButtonActionPerformed
 
     private void RealizujButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RealizujButtonActionPerformed
-        System.out.println("dupa");
+        
         Session sesja = factory.openSession();
         EntityManager em = factory.createEntityManager();
         List<Realizacjazamowienia> Lista_realizacji;
@@ -527,13 +527,10 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
            ).getResultList();
            WynikLista = new ArrayList<>();
            for(Object[] w : WynikiOBJ){        
-               WynikPobrania WZ = new WynikPobrania(w);
-               System.out.println("Wynik "+w[0].toString());
+               WynikPobrania WZ = new WynikPobrania(w);               
                WynikLista.add(WZ);           
            }
            if(WynikLista.isEmpty()){
-               System.out.println(data_graniczna_dolna);
-               System.out.println(data_graniczna_gorna);
                JOptionPane.showMessageDialog(this, "nie znaleziono szukanych pobran",
                         "RealizacjaZamowien. B³¹d.", JOptionPane.WARNING_MESSAGE);
                break;
@@ -545,7 +542,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
                 sesja.beginTransaction();
                 sesja.save(RZ);
                 sesja.getTransaction().commit();
-                sesja.close();
+                
                 JOptionPane.showMessageDialog(this, "Pomyœlnie dodano realizacje do bazy.",
                         "Dodawanie realizacji. Info.", JOptionPane.INFORMATION_MESSAGE);                
             }catch(java.lang.IllegalStateException ise){
@@ -707,6 +704,7 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
     }  
     
     public void StanRealizacji(){
+        
         System.out.println("7");
         Session sesja = factory.openSession();
         EntityManager em = factory.createEntityManager();
@@ -728,8 +726,9 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this, " B³¹d StanRealizacji() !!! ");
         }  
-        System.out.println("3");
-        ((RealizacjazamowieniaListModel)ListaZnalezionychRealizacjiJList.getModel()).dodajRealizacjeZamowien(r_l);
+        System.out.println("3");       
+        
+       //((RealizacjazamowieniaListModel)ListaZnalezionychRealizacjiJList.getModel()).dodajRealizacjeZamowien(r_l);
         System.out.println("4");
     }
     public static Date data_graniczna(Date d,int o){

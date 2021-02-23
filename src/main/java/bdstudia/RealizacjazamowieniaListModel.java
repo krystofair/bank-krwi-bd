@@ -19,12 +19,22 @@ public class RealizacjazamowieniaListModel extends DefaultListModel<String>  {
             IdRealizacjiNaLiscie.clear();
         }
         rz.forEach(e->{
-            addElement(e.getIdrealizacji()
+            
+         addElement(  String.valueOf(e.getIdrealizacji())
                     + "  |zamówienie nr.: " 
-                    + e.getIdzamowienia()
+                    + String.valueOf(e.getIdzamowienia())
                     + "  |pobranie nr.: "
-                    + e.getIdpobrania()
+                    + String.valueOf(e.getIdpobrania())
+                            
                     );
+//         addElement(e.getIdrealizacji()
+//                    + "  |zamówienie nr.: " 
+//                    + e.getIdzamowienia()
+//                    + "  |pobranie nr.: "
+//                    + e.getIdpobrania()
+//                            
+//                    );
+                   
             IdRealizacjiNaLiscie.add(e.getIdrealizacji());
         });
     }
