@@ -91,8 +91,18 @@ public class BankKrwiApp extends javax.swing.JFrame{
         });
 
         ZamowieniaBtn.setText("Zamówienia");
+        ZamowieniaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ZamowieniaBtnActionPerformed(evt);
+            }
+        });
 
         RealizacjeBtn.setText("Realizacje");
+        RealizacjeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RealizacjeBtnActionPerformed(evt);
+            }
+        });
 
         NowePobranieBtn.setText("Nowe Pobranie");
         NowePobranieBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -189,6 +199,16 @@ public class BankKrwiApp extends javax.swing.JFrame{
         pf.loadPerson(InnerPerson);
         pf.pokazFormularz();
     }//GEN-LAST:event_NowePobranieBtnActionPerformed
+
+    private void ZamowieniaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZamowieniaBtnActionPerformed
+        ZamowieniaJFrame zjf = new ZamowieniaJFrame(FactoryObj);
+        zjf.pokaz_formularz();
+    }//GEN-LAST:event_ZamowieniaBtnActionPerformed
+
+    private void RealizacjeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RealizacjeBtnActionPerformed
+        RealizacjaZamowienJFrame rzjf = new RealizacjaZamowienJFrame(FactoryObj);
+        rzjf.pokaz_formularz();
+    }//GEN-LAST:event_RealizacjeBtnActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
