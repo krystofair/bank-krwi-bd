@@ -7,6 +7,7 @@ package bdstudia;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -28,6 +29,8 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
 
     private SessionFactory factory;
     private Zamowienie z;
+    private Osoba LastPerson;
+    
      
     /**
      * Creates new form ZamowieniaJFrame
@@ -38,6 +41,10 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
         initComponents();
         Dodaj_Opis();
     }
+    
+    public void loadPerson(Osoba o) {
+       this.LastPerson = o;
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -124,6 +131,11 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
         });
 
         jButton2.setText("Ostatnia Dodana Osoba");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -398,6 +410,18 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_ZamowienieBTNActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(LastPerson != null) {
+            PeselEditText.setText(LastPerson.getPesel());
+            //SzukajHandler(new java.awt.event.ActionEvent(SzukajOsobyBtn, 0, "action performed"));
+            ((OsobyZnalezioneModel)ListaZnalezionychOsob.getModel()).dodajOsoby(Arrays.asList(LastPerson));
+            ListaZnalezionychOsob.setSelectedIndex(0);
+            AdresEditText.setText(LastPerson.getAdres());
+            ImieEditText2.setText(LastPerson.getImie());
+            NazwiskoEditText.setText(LastPerson.getNazwisko());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

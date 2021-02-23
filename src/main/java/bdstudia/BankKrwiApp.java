@@ -202,6 +202,7 @@ public class BankKrwiApp extends javax.swing.JFrame{
 
     private void ZamowieniaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZamowieniaBtnActionPerformed
         ZamowieniaJFrame zjf = new ZamowieniaJFrame(FactoryObj);
+        zjf.loadPerson(InnerPerson);
         zjf.pokaz_formularz();
     }//GEN-LAST:event_ZamowieniaBtnActionPerformed
 
