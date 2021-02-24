@@ -71,7 +71,6 @@ public class PobranieForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         SzukajOsobyBtn = new javax.swing.JButton();
-        FromLastFormBtn = new javax.swing.JButton();
         EditChoosedPersonBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -156,13 +155,6 @@ public class PobranieForm extends javax.swing.JFrame {
             }
         });
 
-        FromLastFormBtn.setText("Z ostatniego formularza");
-        FromLastFormBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FromLastFormBtnActionPerformed(evt);
-            }
-        });
-
         EditChoosedPersonBtn.setText("Edytuj wybran¹ osobê");
         EditChoosedPersonBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,11 +183,9 @@ public class PobranieForm extends javax.swing.JFrame {
                             .addComponent(ImieEditText2, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(SzukajOsobyBtn)
-                        .addGap(31, 31, 31)
-                        .addComponent(FromLastFormBtn)
-                        .addGap(36, 36, 36)
+                        .addGap(223, 223, 223)
                         .addComponent(EditChoosedPersonBtn)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
                 .addContainerGap())
@@ -222,10 +212,9 @@ public class PobranieForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SzukajOsobyBtn)
-                    .addComponent(FromLastFormBtn)
                     .addComponent(EditChoosedPersonBtn))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -564,18 +553,6 @@ public class PobranieForm extends javax.swing.JFrame {
         sesja.close(); // zamykanie sesji
     }//GEN-LAST:event_SzukajHandler
 
-    private void FromLastFormBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromLastFormBtnActionPerformed
-        if(LastPerson != null) {
-            PeselEditText.setText(LastPerson.getPesel());
-            //SzukajHandler(new java.awt.event.ActionEvent(SzukajOsobyBtn, 0, "action performed"));
-            ((OsobyZnalezioneModel)ListaZnalezionychOsob.getModel()).dodajOsoby(Arrays.asList(LastPerson));
-            ListaZnalezionychOsob.setSelectedIndex(0);
-            AdresEditText.setText(LastPerson.getAdres());
-            ImieEditText2.setText(LastPerson.getImie());
-            NazwiskoEditText.setText(LastPerson.getNazwisko());
-        }
-    }//GEN-LAST:event_FromLastFormBtnActionPerformed
-
     private void DateChoiceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DateChoiceBtnActionPerformed
         DatePicker dp = new DatePicker(this);
         Date data = dp.setPickedDate();
@@ -732,7 +709,6 @@ public class PobranieForm extends javax.swing.JFrame {
     private javax.swing.JButton DateChoiceBtn;
     private javax.swing.JButton EditBankBtn;
     private javax.swing.JButton EditChoosedPersonBtn;
-    private javax.swing.JButton FromLastFormBtn;
     private javax.swing.JTextField ImieEditText2;
     private javax.swing.JTextField KrajBankuEditText1;
     private javax.swing.JList<String> ListaZnalezionychBankow;

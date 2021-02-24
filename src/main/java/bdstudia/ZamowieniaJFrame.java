@@ -68,7 +68,6 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         SzukajOsobyBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         TypProduktuComboBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -130,13 +129,6 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Ostatnia Dodana Osoba");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -144,7 +136,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -159,10 +151,7 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
                                     .addComponent(PeselEditText, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(AdresEditText, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ImieEditText2)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(SzukajOsobyBtn)
-                                .addGap(31, 31, 31)
-                                .addComponent(jButton2)))
+                            .addComponent(SzukajOsobyBtn))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -186,10 +175,8 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(AdresEditText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SzukajOsobyBtn)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(SzukajOsobyBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -411,18 +398,6 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_ZamowienieBTNActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(LastPerson != null) {
-            PeselEditText.setText(LastPerson.getPesel());
-            //SzukajHandler(new java.awt.event.ActionEvent(SzukajOsobyBtn, 0, "action performed"));
-            ((OsobyZnalezioneModel)ListaZnalezionychOsob.getModel()).dodajOsoby(Arrays.asList(LastPerson));
-            ListaZnalezionychOsob.setSelectedIndex(0);
-            AdresEditText.setText(LastPerson.getAdres());
-            ImieEditText2.setText(LastPerson.getImie());
-            NazwiskoEditText.setText(LastPerson.getNazwisko());
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -507,7 +482,6 @@ public class ZamowieniaJFrame extends javax.swing.JFrame {
     private javax.swing.JButton SzukajOsobyBtn;
     private javax.swing.JComboBox<String> TypProduktuComboBox;
     private javax.swing.JButton ZamowienieBTN;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
