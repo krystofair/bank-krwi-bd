@@ -5,6 +5,7 @@
  */
 package bdstudia;
 
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -256,21 +257,22 @@ public class OsobaJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_SprawdButtonActionPerformed
 
     private void ImieEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ImieEditTextKeyTyped
-        if(ImieEditText.getText().length() >= 255
-        || !Character.isAlphabetic(evt.getKeyChar())) {
+        char c = evt.getKeyChar();
+        if(NazwiskoEditText.getText().length() > 255) evt.consume();
+        if( Character.isDigit(evt.getKeyChar()) || !Character.isAlphabetic(evt.getKeyChar())
+                && !(c == ' ' || c == '-' || c =='\'')) {
             evt.consume();
-        }    
+        }
     }//GEN-LAST:event_ImieEditTextKeyTyped
 
     private void NazwiskoEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwiskoEditTextKeyTyped
-        if(!Character.isAlphabetic(evt.getKeyChar()) && evt.getKeyChar() != ' ' &&
-                evt.getKeyChar() != '-') {
+        char c = evt.getKeyChar();
+        if(NazwiskoEditText.getText().length() > 255) evt.consume();
+        if( Character.isDigit(evt.getKeyChar()) || !Character.isAlphabetic(evt.getKeyChar())
+                && !(c == ' ' || c == '-' || c =='\'')) {
             evt.consume();
         }
-        if(NazwiskoEditText.getText().length() >= 255
-        || !Character.isAlphabetic(evt.getKeyChar())) {
-            evt.consume();
-        }  
+          
     }//GEN-LAST:event_NazwiskoEditTextKeyTyped
 
     private void PeselEditTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PeselEditTextKeyTyped

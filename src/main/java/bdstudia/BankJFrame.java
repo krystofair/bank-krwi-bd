@@ -223,8 +223,9 @@ public class BankJFrame extends javax.swing.JFrame {
         }
         
         if(!bank.validate() ) {
-            JOptionPane.showMessageDialog(this, "Nie poprawne dane, wypeÂ³nij wszystkie komÃ³rki",
-                    "Dodawanie banku. BÂ³Â¹d.", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nie poprawne dane, wype³nij wszystkie komórki",
+                    "Dodawanie banku. B³¹d.", JOptionPane.WARNING_MESSAGE);
+            bank=null;
         } else {
             Session sesja = sf_ref.openSession();
             if(dodawanie) {

@@ -586,7 +586,7 @@ public class PobranieForm extends javax.swing.JFrame {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         if(!(Calendar.getInstance().after(c))) {
-            JOptionPane.showMessageDialog(this, "Data nie moÂ¿e byÃ¦ wiÃªksza niÂ¿ teraÂŸniejsza. Popraw datÃª.");
+            JOptionPane.showMessageDialog(this, "Data nie mo¿e byæ wiêksza ni¿ teraŸniejsza. Popraw datê.");
             return;
         }
         this.pobranie = new Pobranie();
