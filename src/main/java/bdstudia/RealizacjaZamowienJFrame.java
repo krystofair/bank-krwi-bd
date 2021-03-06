@@ -525,26 +525,40 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             sesja = factory.openSession();
             em = factory.createEntityManager();
             List<Object[]> WynikiOBJ = em.createNativeQuery(
-              " select x.IDPobrania, x.Rodzaj, x.WskaznikRh, x.DataPobrania "
-                  + "from ( "
-                  + "SELECT p.IDPobrania, og.Rodzaj, og.WskaznikRh, p.DataPobrania "
-                  + "FROM ( select pob.IDpobrania, pob.IDOsoby, prd.Typ, pob.DataPobrania "
-                  + "FROM pobrania pob INNER JOIN produkty prd "
-                  + "ON pob.IDProduktu = prd.IDProduktu "
-                  + "WHERE prd.Typ = '"+p.getTyp()
-                  + "' ) p INNER JOIN ( "
-                  + "select o.IDOsoby, g.Rodzaj, g.WskaznikRh "
-                  + "from osoby o inner join grupykrwi g "
-                  + "ON o.IDGrupyKrwi = g.IDGrupyKrwi "
-                  + "WHERE Rodzaj LIKE '"+g.getRodzaj()+"' "
-                  + "AND WskaznikRh LIKE '"+g.getWskaznikrh()+"' ) og "
-                  + "ON p.IDOsoby = og.IDOsoby "
-                  + "WHERE DataPobrania between '"+data_graniczna_dolna+"' "
-                  + "AND  '2044-03-26 23:59:59.0' ) x "
-                  + "WHERE x.IDPobrania "
-                  + "NOT IN ( SELECT r.IDPobrania "
-                  + "FROM realizacjezamowien r );"
-           ).getResultList();
+                    "SELECT P.IDPobrania, GK.Rodzaj, GK.WskaznikRh, P.DataPobrania "
+                    + "FROM Pobrania P INNER JOIN Zamowienia Z ON Z.IDProduktu = P.IDProduktu "
+                    + "INNER JOIN osoby O1 ON P.IDOsoby = O1.IDOsoby "
+                    + "INNER JOIN osoby O2 ON Z.IDOsoby = O2.IDOsoby "
+                    + "INNER JOIN GrupyKrwi GK ON GK.IDGrupyKrwi = O2.IDGrupyKrwi "
+                    + "INNER JOIN Produkty PR ON PR.IDProduktu = Z.IDProduktu "
+                    + "WHERE NOW() < DATE_ADD(P.DataPobrania, INTERVAL PR.OkresPrzydatnosci DAY) "
+                    + "AND O1.IDGrupyKrwi = O2.IDGrupyKrwi "
+                    + "AND 0=( SELECT COUNT(*) FROM realizacjezamowien RZ WHERE RZ.IDZamowienia = Z.IDZamowienia AND RZ.IDPobrania = P.IDPobrania ) "
+                    + "AND GK.Rodzaj = :rodzaj AND PR.Typ = :typ AND GK.WskaznikRh  = :wskaznik "
+                    + "AND Z.Ilosc > (SELECT COUNT(*) FROM realizacjezamowien RZ WHERE RZ.IDZamowienia = Z.IDZamowienia);")
+                    .setParameter("rodzaj", g.getRodzaj()).setParameter("typ", p.getTyp()).setParameter("wskaznik", g.getWskaznikrh())
+                    .getResultList();
+
+//              " select x.IDPobrania, x.Rodzaj, x.WskaznikRh, x.DataPobrania "
+//                  + "from ( "
+//                  + "SELECT p.IDPobrania, og.Rodzaj, og.WskaznikRh, p.DataPobrania "
+//                  + "FROM ( select pob.IDpobrania, pob.IDOsoby, prd.Typ, pob.DataPobrania "
+//                  + "FROM pobrania pob INNER JOIN produkty prd "
+//                  + "ON pob.IDProduktu = prd.IDProduktu "
+//                  + "WHERE prd.Typ = '"+p.getTyp()
+//                  + "' ) p INNER JOIN ( "
+//                  + "select o.IDOsoby, g.Rodzaj, g.WskaznikRh "
+//                  + "from osoby o inner join grupykrwi g "
+//                  + "ON o.IDGrupyKrwi = g.IDGrupyKrwi "
+//                  + "WHERE Rodzaj LIKE '"+g.getRodzaj()+"' "
+//                  + "AND WskaznikRh LIKE '"+g.getWskaznikrh()+"' ) og "
+//                  + "ON p.IDOsoby = og.IDOsoby "
+//                  + "WHERE DataPobrania between '"+data_graniczna_dolna+"' "
+//                  + "AND  '2044-03-26 23:59:59.0' ) x "
+//                  + "WHERE x.IDPobrania "
+//                  + "NOT IN ( SELECT r.IDPobrania "
+//                  + "FROM realizacjezamowien r );"
+//           ).getResultList();
            sesja.close();
            WynikLista = new ArrayList<>();
            for(Object[] w : WynikiOBJ){        
@@ -619,20 +633,27 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             case(0): // IDzamowienia
             {
                 List<Object[]> WynikiOBJ = em.createNativeQuery(
-                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
-                    + "FROM ( "
-                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
-                        + "FROM ( "
-                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
-                            + "FROM osoby o INNER JOIN grupykrwi k "
-                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "
-                        + ") AS OK INNER JOIN zamowienia z "
-                        + "ON OK.IDOsoby = z.IDOsoby "
-                        + "WHERE z.IDZamowienia = "
-                        + KryteriumET.getText()
-                    + ") AS OKZ INNER JOIN produkty p "
-                    + "ON OKZ.IDProduktu = p.IDProduktu"
-                ).getResultList();    
+                        "SELECT O.Imie, O.Nazwisko, GK.Rodzaj, GK.WskaznikRh , P.Typ, Z.Ilosc, Z.DataZamowienia, Z.IDZamowienia "
+                                + "FROM Zamowienia Z INNER JOIN Produkty P ON Z.IDProduktu = P.IDProduktu "
+                                + "INNER JOIN osoby O ON O.IDOsoby = Z.IDOsoby "
+                                + "INNER JOIN grupykrwi GK ON O.IDGrupyKrwi = GK.IDGrupyKrwi "
+                                + "WHERE Z.IDZamowienia = :idzamowienia ;")
+                        .setParameter("idzamowienia", Integer.parseInt(KryteriumET.getText()))
+                        .getResultList();
+//                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
+//                    + "FROM ( "
+//                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
+//                        + "FROM ( "
+//                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
+//                            + "FROM osoby o INNER JOIN grupykrwi k "
+//                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "
+//                        + ") AS OK INNER JOIN zamowienia z "
+//                        + "ON OK.IDOsoby = z.IDOsoby "
+//                        + "WHERE z.IDZamowienia = "
+//                        + KryteriumET.getText()
+//                    + ") AS OKZ INNER JOIN produkty p "
+//                    + "ON OKZ.IDProduktu = p.IDProduktu"
+//                ).getResultList();    
                 
                 for(Object[] w : WynikiOBJ){        
                     WynikZamowienia WZ = new WynikZamowienia(w);
@@ -643,22 +664,29 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             case(1): // Imie
             {
                 List<Object[]> WynikiOBJ = em.createNativeQuery(
-                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
-                    + "FROM ( "
-                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
-                        + "FROM ( "
-                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
-                            + "FROM osoby o INNER JOIN grupykrwi k "
-                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "
-                            + "WHERE o.Imie LIKE '%"
-                            + KryteriumET.getText()
-                            +"%' "
-                        + ") AS OK INNER JOIN zamowienia z "
-                        + "ON OK.IDOsoby = z.IDOsoby "                    
-                    + ") AS OKZ INNER JOIN produkty p "
-                    + "ON OKZ.IDProduktu = p.IDProduktu"
-                )
-                .getResultList();
+                        "SELECT O.Imie, O.Nazwisko, GK.Rodzaj, GK.WskaznikRh , P.Typ, Z.Ilosc, Z.DataZamowienia, Z.IDZamowienia "
+                                + "FROM Zamowienia Z INNER JOIN Produkty P ON Z.IDProduktu = P.IDProduktu "
+                                + "INNER JOIN osoby O ON O.IDOsoby = Z.IDOsoby "
+                                + "INNER JOIN grupykrwi GK ON O.IDGrupyKrwi = GK.IDGrupyKrwi "
+                                + "WHERE O.Imie LIKE('%" + KryteriumET.getText() + "%');")
+//                        .setParameter("idzamowienia", Integer.parseInt(KryteriumET.getText()))
+                        .getResultList();
+//                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
+//                    + "FROM ( "
+//                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
+//                        + "FROM ( "
+//                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
+//                            + "FROM osoby o INNER JOIN grupykrwi k "
+//                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "
+//                            + "WHERE o.Imie LIKE '%"
+//                            + KryteriumET.getText()
+//                            +"%' "
+//                        + ") AS OK INNER JOIN zamowienia z "
+//                        + "ON OK.IDOsoby = z.IDOsoby "                    
+//                    + ") AS OKZ INNER JOIN produkty p "
+//                    + "ON OKZ.IDProduktu = p.IDProduktu"
+//                )
+//                .getResultList();
                 
                 for(Object[] w : WynikiOBJ){        
                     WynikZamowienia WZ = new WynikZamowienia(w);
@@ -669,22 +697,29 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             case(2): // Nazwisko
             {
                 List<Object[]> WynikiOBJ = em.createNativeQuery(
-                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
-                    + "FROM ( "
-                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
-                        + "FROM ( "
-                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
-                            + "FROM osoby o INNER JOIN grupykrwi k "
-                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "
-                            + "WHERE o.Nazwisko LIKE '%"
-                            + KryteriumET.getText()
-                            +"%' "
-                        + ") AS OK INNER JOIN zamowienia z "
-                        + "ON OK.IDOsoby = z.IDOsoby "                    
-                    + ") AS OKZ INNER JOIN produkty p "
-                    + "ON OKZ.IDProduktu = p.IDProduktu"
-                )
-                .getResultList();
+                        "SELECT O.Imie, O.Nazwisko, GK.Rodzaj, GK.WskaznikRh , P.Typ, Z.Ilosc, Z.DataZamowienia, Z.IDZamowienia "
+                                + "FROM Zamowienia Z INNER JOIN Produkty P ON Z.IDProduktu = P.IDProduktu "
+                                + "INNER JOIN osoby O ON O.IDOsoby = Z.IDOsoby "
+                                + "INNER JOIN grupykrwi GK ON O.IDGrupyKrwi = GK.IDGrupyKrwi "
+                                + "WHERE O.Nazwisko LIKE('%" + KryteriumET.getText() + "%');")
+//                        .setParameter("idzamowienia", Integer.parseInt(KryteriumET.getText()))
+                        .getResultList();
+//                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
+//                    + "FROM ( "
+//                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
+//                        + "FROM ( "
+//                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
+//                            + "FROM osoby o INNER JOIN grupykrwi k "
+//                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "
+//                            + "WHERE o.Nazwisko LIKE '%"
+//                            + KryteriumET.getText()
+//                            +"%' "
+//                        + ") AS OK INNER JOIN zamowienia z "
+//                        + "ON OK.IDOsoby = z.IDOsoby "                    
+//                    + ") AS OKZ INNER JOIN produkty p "
+//                    + "ON OKZ.IDProduktu = p.IDProduktu"
+//                )
+//                .getResultList();
                 
                 for(Object[] w : WynikiOBJ){        
                     WynikZamowienia WZ = new WynikZamowienia(w);
@@ -695,22 +730,29 @@ public class RealizacjaZamowienJFrame extends javax.swing.JFrame {
             case(3): // TypProduktu
             {
                 List<Object[]> WynikiOBJ = em.createNativeQuery(
-                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
-                    + "FROM ( "
-                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
-                        + "FROM ( "
-                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
-                            + "FROM osoby o INNER JOIN grupykrwi k "
-                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "                        
-                        + ") AS OK INNER JOIN zamowienia z "
-                        + "ON OK.IDOsoby = z.IDOsoby "                    
-                    + ") AS OKZ INNER JOIN produkty p "
-                    + "ON OKZ.IDProduktu = p.IDProduktu "
-                    + "WHERE p.Typ LIKE '%"
-                    + KryteriumET.getText()
-                    +"%'"
-                 )
-                .getResultList();
+                        "SELECT O.Imie, O.Nazwisko, GK.Rodzaj, GK.WskaznikRh , P.Typ, Z.Ilosc, Z.DataZamowienia, Z.IDZamowienia "
+                                + "FROM Zamowienia Z INNER JOIN Produkty P ON Z.IDProduktu = P.IDProduktu "
+                                + "INNER JOIN osoby O ON O.IDOsoby = Z.IDOsoby "
+                                + "INNER JOIN grupykrwi GK ON O.IDGrupyKrwi = GK.IDGrupyKrwi "
+                                + "WHERE P.Typ LIKE('%" + KryteriumET.getText() + "%');")
+//                        .setParameter("idzamowienia", Integer.parseInt(KryteriumET.getText()))
+                        .getResultList(); // TODO: Zrobiæ tutaj zapytania w formacie buildera HIBERNATE'a
+//                    "SELECT OKZ.Imie, OKZ.Nazwisko, OKZ.Rodzaj, OKZ.WskaznikRh, p.Typ, OKZ.Ilosc, OKZ.DataZamowienia, OKZ.IDZamowienia "
+//                    + "FROM ( "
+//                        + "SELECT OK.Imie, OK.Nazwisko, OK.Rodzaj, OK.WskaznikRh , z.Ilosc, z.IDProduktu, z.DataZamowienia, z.IDZamowienia "
+//                        + "FROM ( "
+//                            + "SELECT o.IDOsoby, o.Imie, o.Nazwisko, k.Rodzaj, k.WskaznikRh "
+//                            + "FROM osoby o INNER JOIN grupykrwi k "
+//                            + "ON o.IDGrupyKrwi = k.IDGrupyKrwi "                        
+//                        + ") AS OK INNER JOIN zamowienia z "
+//                        + "ON OK.IDOsoby = z.IDOsoby "                    
+//                    + ") AS OKZ INNER JOIN produkty p "
+//                    + "ON OKZ.IDProduktu = p.IDProduktu "
+//                    + "WHERE p.Typ LIKE '%"
+//                    + KryteriumET.getText()
+//                    +"%'"
+//                 )
+//                .getResultList();
                 
                 for(Object[] w : WynikiOBJ){        
                     WynikZamowienia WZ = new WynikZamowienia(w);
